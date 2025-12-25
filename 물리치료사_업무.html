@@ -89,6 +89,26 @@
             margin-bottom: 15px;
             font-size: 1.1em;
             font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .section-title.clickable {
+            cursor: pointer;
+        }
+        
+        .section-title.clickable::after {
+            content: '🔍 클릭하여 평가지표 이미지 보기';
+            font-size: 0.8em;
+            opacity: 0.9;
         }
         
         table {
@@ -133,6 +153,66 @@
             border-radius: 4px;
         }
         
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: zoomIn 0.3s;
+        }
+        
+        @keyframes zoomIn {
+            from { transform: translate(-50%, -50%) scale(0.7); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+        }
+        
+        .image-error {
+            color: white;
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+        }
+        
         @media print {
             body {
                 background: white;
@@ -146,6 +226,10 @@
             
             .section {
                 page-break-inside: avoid;
+            }
+            
+            .section-title.clickable::after {
+                display: none;
             }
         }
     </style>
@@ -194,7 +278,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 4: 직원교육</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 04.jpg')">평가지표 4: 직원교육</div>
             <table>
                 <thead>
                     <tr>
@@ -220,7 +304,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 9: 안전하고 쾌적한 환경조성</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 09.jpg')">평가지표 9: 안전하고 쾌적한 환경조성</div>
             <table>
                 <thead>
                     <tr>
@@ -246,7 +330,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 10: 낙상예방 환경조성</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 10.jpg')">평가지표 10: 낙상예방 환경조성</div>
             <table>
                 <thead>
                     <tr>
@@ -272,7 +356,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 24: 통합적사정</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 24.jpg')">평가지표 24: 통합적사정</div>
             <table>
                 <thead>
                     <tr>
@@ -293,7 +377,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 25: 급여제공계획수립 및 제공</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 25.jpg')">평가지표 25: 급여제공계획수립 및 제공</div>
             <table>
                 <thead>
                     <tr>
@@ -324,7 +408,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 29: 욕창예방 및 관리</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 29.jpg')">평가지표 29: 욕창예방 및 관리</div>
             <table>
                 <thead>
                     <tr>
@@ -345,7 +429,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 34: 기능회복훈련 계획</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 34.jpg')">평가지표 34: 기능회복훈련 계획</div>
             <table>
                 <thead>
                     <tr>
@@ -366,7 +450,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 35: 기능회복훈련</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 35.jpg')">평가지표 35: 기능회복훈련</div>
             <table>
                 <thead>
                     <tr>
@@ -397,7 +481,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 36: 관절구축 예방</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 36.jpg')">평가지표 36: 관절구축 예방</div>
             <table>
                 <thead>
                     <tr>
@@ -423,7 +507,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 37: 급여제공결과평가</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 37.jpg')">평가지표 37: 급여제공결과평가</div>
             <table>
                 <thead>
                     <tr>
@@ -444,5 +528,48 @@
         </div>
 
     </div>
+    
+    <!-- 이미지 모달 -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="imageError" class="image-error" style="display: none;">
+            이미지를 불러올 수 없습니다.<br>
+            경로를 확인해주세요: <span id="imagePath"></span>
+        </div>
+    </div>
+    
+    <script>
+        function openModal(imagePath) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const imageError = document.getElementById('imageError');
+            const imagePathSpan = document.getElementById('imagePath');
+            
+            modal.style.display = "block";
+            modalImg.style.display = "block";
+            imageError.style.display = "none";
+            
+            modalImg.src = imagePath;
+            
+            // 이미지 로드 실패 시
+            modalImg.onerror = function() {
+                modalImg.style.display = "none";
+                imageError.style.display = "block";
+                imagePathSpan.textContent = imagePath;
+            };
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+        
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
