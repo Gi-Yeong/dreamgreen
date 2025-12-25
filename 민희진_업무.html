@@ -89,6 +89,26 @@
             margin-bottom: 15px;
             font-size: 1.1em;
             font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .section-title.clickable {
+            cursor: pointer;
+        }
+        
+        .section-title.clickable::after {
+            content: '🔍 클릭하여 평가지표 이미지 보기';
+            font-size: 0.8em;
+            opacity: 0.9;
         }
         
         table {
@@ -133,6 +153,66 @@
             border-radius: 4px;
         }
         
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: zoomIn 0.3s;
+        }
+        
+        @keyframes zoomIn {
+            from { transform: translate(-50%, -50%) scale(0.7); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+        }
+        
+        .image-error {
+            color: white;
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+        }
+        
         @media print {
             body {
                 background: white;
@@ -147,12 +227,16 @@
             .section {
                 page-break-inside: avoid;
             }
+            
+            .section-title.clickable::after {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>민희진 사회복지사 업무</h1>
+        <h1>민희진 업무</h1>
         
         <div class="legend">
             <h2>📋 주기별 색상 범례</h2>
@@ -194,7 +278,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 1: 운영규정</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 01.jpg')">평가지표 1: 운영규정</div>
             <table>
                 <thead>
                     <tr>
@@ -215,7 +299,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 2: 사업계획 및 평가</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 02.jpg')">평가지표 2: 사업계획 및 평가</div>
             <table>
                 <thead>
                     <tr>
@@ -236,7 +320,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 3: 운영위원회</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 03.jpg')">평가지표 3: 운영위원회</div>
             <table>
                 <thead>
                     <tr>
@@ -262,7 +346,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 4: 직원교육</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 04.jpg')">평가지표 4: 직원교육</div>
             <table>
                 <thead>
                     <tr>
@@ -283,7 +367,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 6: 직원권익향상</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 06.jpg')">평가지표 6: 직원권익향상</div>
             <table>
                 <thead>
                     <tr>
@@ -304,7 +388,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 8: 질향상노력</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 08.jpg')">평가지표 8: 질향상노력</div>
             <table>
                 <thead>
                     <tr>
@@ -325,7 +409,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 13: 수급자(보호자) 참여강화</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 13.jpg')">평가지표 13: 수급자(보호자) 참여강화</div>
             <table>
                 <thead>
                     <tr>
@@ -346,7 +430,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 14: 가족 및 지역사회 교류</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 14.jpg')">평가지표 14: 가족 및 지역사회 교류</div>
             <table>
                 <thead>
                     <tr>
@@ -392,7 +476,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 16: 개별욕구존중</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 16.jpg')">평가지표 16: 개별욕구존중</div>
             <table>
                 <thead>
                     <tr>
@@ -418,7 +502,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 18: 정보제공</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 18.jpg')">평가지표 18: 정보제공</div>
             <table>
                 <thead>
                     <tr>
@@ -444,7 +528,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 22: 감염관리</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 22.jpg')">평가지표 22: 감염관리</div>
             <table>
                 <thead>
                     <tr>
@@ -465,7 +549,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 24: 통합적사정</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 24.jpg')">평가지표 24: 통합적사정</div>
             <table>
                 <thead>
                     <tr>
@@ -491,7 +575,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 25: 급여제공계획수립 및 제공</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 25.jpg')">평가지표 25: 급여제공계획수립 및 제공</div>
             <table>
                 <thead>
                     <tr>
@@ -512,7 +596,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 31: 신체기능 프로그램 **(기존 물리치료사 업무였음)**</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 31.jpg')">평가지표 31: 신체기능 프로그램 **(기존 물리치료사 업무였음)**</div>
             <table>
                 <thead>
                     <tr>
@@ -583,7 +667,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 33: 여가활동 프로그램</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 33.jpg')">평가지표 33: 여가활동 프로그램</div>
             <table>
                 <thead>
                     <tr>
@@ -664,7 +748,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 37: 급여제공결과평가</div>
+            <div class="section-title clickable" onclick="openModal('/images/평가지표 37.jpg')">평가지표 37: 급여제공결과평가</div>
             <table>
                 <thead>
                     <tr>
@@ -681,7 +765,7 @@
                         <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
                     </tr>
                     <tr>
-                        <td class="task-cell">반기별 평가 (3층)</td>
+                        <td class="task-cell">반기별 평가 (4층)</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
                     </tr>
@@ -690,7 +774,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title">평가지표 미해당 일상 업무</div>
+            <div class="section-title" >평가지표 미해당 일상 업무</div>
             <table>
                 <thead>
                     <tr>
@@ -756,5 +840,48 @@
         </div>
 
     </div>
+    
+    <!-- 이미지 모달 -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="imageError" class="image-error" style="display: none;">
+            이미지를 불러올 수 없습니다.<br>
+            경로를 확인해주세요: <span id="imagePath"></span>
+        </div>
+    </div>
+    
+    <script>
+        function openModal(imagePath) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const imageError = document.getElementById('imageError');
+            const imagePathSpan = document.getElementById('imagePath');
+            
+            modal.style.display = "block";
+            modalImg.style.display = "block";
+            imageError.style.display = "none";
+            
+            modalImg.src = imagePath;
+            
+            // 이미지 로드 실패 시
+            modalImg.onerror = function() {
+                modalImg.style.display = "none";
+                imageError.style.display = "block";
+                imagePathSpan.textContent = imagePath;
+            };
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+        
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
