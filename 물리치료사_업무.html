@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>물리치료사 업무</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .legend h2 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        .legend-color {
+            width: 60px;
+            height: 30px;
+            border-radius: 4px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #2c3e50;
+        }
+        
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .task-cell {
+            width: 50%;
+        }
+        
+        .note-cell {
+            width: 25%;
+            color: #666;
+        }
+        
+        .cycle-cell {
+            width: 25%;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>물리치료사 사회복지사 업무</h1>
+        
+        <div class="legend">
+            <h2>📋 주기별 색상 범례</h2>
+            <div class="legend-items">
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FFE5E5;">매일</div>
+                    <span>연한 핑크</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #E5F3FF;">주 1회</div>
+                    <span>연한 파랑</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FFF5E5;">주 2회</div>
+                    <span>연한 오렌지</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #E5FFE5;">월 1회</div>
+                    <span>연한 초록</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #F5E5FF;">분기별</div>
+                    <span>연한 보라</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FFE5F5;">반기별</div>
+                    <span>연한 자주</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FFFFE5;">연 1회</div>
+                    <span>연한 노랑</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #F0F0F0;">수시</div>
+                    <span>연한 회색</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 4: 직원교육</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">법정교육, 의무교육, 직무교육 참여</td>
+                        <td class="note-cell">케어포 8-7</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">요양보호사 대상 기능회복훈련 방법 교육</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 9: 안전하고 쾌적한 환경조성</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">물리치료실 청결 및 안전 관리</td>
+                        <td class="note-cell">현장</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">물리치료 장비 점검 및 관리</td>
+                        <td class="note-cell">지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #E5F3FF;">주 1회/월 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 10: 낙상예방 환경조성</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">수급자 낙상 위험도 평가 및 예방 활동</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">직원 및 수급자 대상 낙상예방 교육</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 24: 통합적사정</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">신규 입소자 및 재평가 대상자의 신체기능 평가</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 25: 급여제공계획수립 및 제공</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">물리치료 대상자에 대한 초기 평가 실시</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">사례관리 회의 참석 (분기별) 및 의견 제시</td>
+                        <td class="note-cell">케어포 8-5</td>
+                        <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">간호조무사와 수급자 상태 공유 및 협업</td>
+                        <td class="note-cell">구두/케어포</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 29: 욕창예방 및 관리</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">욕창 발생 위험자에 대한 체위변경 및 관리 협업</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 34: 기능회복훈련 계획</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">수급자의 신체 상태를 반영하여 일상생활 유지에 필요한 기능회복훈련 계획 수립</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 35: 기능회복훈련</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">수급자의 잔존능력 유지를 위한 개별 훈련 실시</td>
+                        <td class="note-cell">케어포, 지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">훈련 내용 및 결과 기록 작성</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">매월 기능회복훈련 일정표 각층 배부</td>
+                        <td class="note-cell">지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 36: 관절구축 예방</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">입소 후 수급자의 관절 구축 예방 활동 및 기록</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">정기적인 관절가동범위 측정 및 기록</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 37: 급여제공결과평가</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">수급자의 신체기능 변화 확인을 위한 정기 재평가 (분기별)</td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

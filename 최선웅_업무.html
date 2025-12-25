@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>최선웅 업무</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .legend h2 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        .legend-color {
+            width: 60px;
+            height: 30px;
+            border-radius: 4px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #2c3e50;
+        }
+        
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .task-cell {
+            width: 50%;
+        }
+        
+        .note-cell {
+            width: 25%;
+            color: #666;
+        }
+        
+        .cycle-cell {
+            width: 25%;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>최선웅 사회복지사 업무</h1>
+        
+        <div class="legend">
+            <h2>📋 주기별 색상 범례</h2>
+            <div class="legend-items">
+
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FFE5E5;">매일</div>
+                    <span>연한 핑크</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #E5F3FF;">주 1회</div>
+                    <span>연한 파랑</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FFF5E5;">주 2회</div>
+                    <span>연한 오렌지</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #E5FFE5;">월 1회</div>
+                    <span>연한 초록</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #F5E5FF;">분기별</div>
+                    <span>연한 보라</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FFE5F5;">반기별</div>
+                    <span>연한 자주</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FFFFE5;">연 1회</div>
+                    <span>연한 노랑</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #F0F0F0;">수시</div>
+                    <span>연한 회색</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 1: 운영규정</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">매일 시설 운영일지 작성 <span style="color: #666; font-size: 0.9em;">(기존 민희진 업무였음)</span></td>
+                        <td class="note-cell">케어포 6-4</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">운영규정 준비 (년초)</td>
+                        <td class="note-cell">지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 2: 사업계획 및 평가</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">연간 일정 계획</td>
+                        <td class="note-cell">케어포 8-3</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">사업 계획서 준비 (년초)</td>
+                        <td class="note-cell">지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 4: 직원교육</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">법정교육, 의무교육, 13급여제공교육(월), 분기별, 반기, 연간</td>
+                        <td class="note-cell">시청보고, 케어포 작성</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">매년초 전연도 법정의무교육 이수 현황 시청 보고</td>
+                        <td class="note-cell">희망이음</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">13가지 급여제공 직원교육 (매월)</td>
+                        <td class="note-cell">케어포 작성</td>
+                        <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">노인인권 및 노인학대 예방교육 (분기별)</td>
+                        <td class="note-cell">케어포 작성</td>
+                        <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">재난 상황 대처 훈련/구강교육 (반기별)</td>
+                        <td class="note-cell">케어포 작성</td>
+                        <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">교육일지 작성 (인권, 재난, 구강, 직무 등) <span style="color: #666; font-size: 0.9em;">(기존 민희진 업무였음)</span></td>
+                        <td class="note-cell">케어포 8-7</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 5: 직원건강관리</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">직원 입사시 근로계약서, 범죄조회, 입사전 건강검진 관리</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">수급자/직원 연간 현황 관리 (건강검진)</td>
+                        <td class="note-cell">케어포 1-7</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 7: 직원인권보호</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">직원 인권보호 활동 및 고충처리 <span style="color: #0066cc; font-weight: bold;">(새로 추가됨)</span></td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">수급자/직원 연간 현황 관리 (직원인권 보호)</td>
+                        <td class="note-cell">케어포 1-7</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 9: 안전하고 쾌적한 환경조성</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">안전점검 확인 (소방, 전기, 가스, 소독)</td>
+                        <td class="note-cell">케어포 확인(작성)</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">희망이음 비정형 보고 (안전점검-하절기,동절기, 미세먼지)</td>
+                        <td class="note-cell">희망이음</td>
+                        <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">각층 실내 환기 점검표 배부 (매주 또는 매월)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #E5F3FF;">주별/월별</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 10: 낙상예방 환경조성</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">희망이음 비정형 보고 (낙상예방)</td>
+                        <td class="note-cell">희망이음</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 11: 재난상황대응</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">소방 안전관리 보조자 (비상 연락망 관리, 소방계획서 및 업무수행 기록표 작성)</td>
+                        <td class="note-cell">계획서(년)/업무수행(월)</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연1회/월1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">소방계획서 준비 (년초)</td>
+                        <td class="note-cell">지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 12: 시설안전</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">안전점검 확인 (소방, 전기, 가스)</td>
+                        <td class="note-cell">케어포 확인(작성)</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">소화기 점검표 매월 확인 (지하, 1층, 2층, 3층, 4층, 옥상)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">소화기 점검표 준비 (년초)</td>
+                        <td class="note-cell">지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">희망이음 비정형 보고 (CCTV 등)</td>
+                        <td class="note-cell">희망이음</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 13: 수급자(보호자) 참여강화</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">수급자 상담/면담</td>
+                        <td class="note-cell">케어포 1-4</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 14: 가족 및 지역사회 교류</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">전화응대 및 면회/외출/외박 응대</td>
+                        <td class="note-cell">일지 및 케어포 기록</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">어르신 동행 서비스 (병원진료, 마트, 카페 나들이 등)</td>
+                        <td class="note-cell">원장님 부재시/차량운전</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">수급자 외출, 외박 관리</td>
+                        <td class="note-cell">케어포 1-5</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 17: 야간보호</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">야간 근무일지 작성 및 점검 <span style="color: #0066cc; font-weight: bold;">(새로 추가됨)</span></td>
+                        <td class="note-cell">케어포</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 18: 정보제공</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">어르신 입소시 입소 계약서 체결 및 동의서 받음</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 19: 노인인권보호</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">신체제제기록 관리</td>
+                        <td class="note-cell">케어포 2-4</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">수급자/직원 연간 현황 관리 (노인인권보호)</td>
+                        <td class="note-cell">케어포 1-7</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 23: 수급자 건강관리</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">수급자/직원 연간 현황 관리 (건강검진)</td>
+                        <td class="note-cell">케어포 1-7</td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 24: 통합적사정</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">어르신 입소상담 (상담일지 기록)</td>
+                        <td class="note-cell">원장님 부재시</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">수급자 정보 관리</td>
+                        <td class="note-cell">케어포 1-1</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">전체 수습자 기초 평가</td>
+                        <td class="note-cell">케어포 1-2</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">기초평가 관리</td>
+                        <td class="note-cell">케어포 1-3</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 25: 급여제공계획수립 및 제공</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">요양급여 제공 일지 작성 (점검후 잘못된거 수정)</td>
+                        <td class="note-cell">케어포 2-1</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 27: 목욕 서비스</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">케어포 목욕일정 입력 (매월초-수정시)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">목욕일정 및 제공현황 관리</td>
+                        <td class="note-cell">케어포 2-3</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 28: 배설관리</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">집중배설관찰기록 관리 (어르신 입소후 집중 배설 관찰 기록)</td>
+                        <td class="note-cell">케어포 2-2</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">인지 프로그램 계획, 진행(참여), 작성, 사진촬영, 밴드 작성</td>
+                        <td class="note-cell">케어포, 지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일/주별</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">인지 프로그램 분기별 그룹 평가 및 반영</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">인지 연간계획서 작성 (연 1회)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">신규 수급자 인지 그룹 설정</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">매달 인지 외부강사 메일 확인</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">케어포 인지 프로그램 등록 (매달 입력)</td>
+                        <td class="note-cell">케어포, 지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">인지 프로그램 제공기록 관리</td>
+                        <td class="note-cell">케어포 5-1</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일/주별</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">인지 프로그램 외부강사/자원봉사 관리</td>
+                        <td class="note-cell">케어포 5-1-1</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">인지 프로그램 일정관리</td>
+                        <td class="note-cell">케어포 5-2</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">인지 프로그램 수급자 관리</td>
+                        <td class="note-cell">케어포 5-3</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">인지 프로그램 정보관리</td>
+                        <td class="note-cell">케어포 5-4</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 전체: 평가 관리</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">평가 지표별 관리 확인 (케어포 평가 지표별 수시 확인, 잘못된거 수정)</td>
+                        <td class="note-cell">25년 평가 항목 기준</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">케어포 일일 점검 확인 (케어포 6-2 매일 확인)</td>
+                        <td class="note-cell">케어포 확인(작성)</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">케어포 정기점검 확인 (케어포 6-3 매월 확인)</td>
+                        <td class="note-cell">케어포 확인(작성)</td>
+                        <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">평가지표 미해당 일상 업무</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>업무 내용</th>
+                        <th>비고</th>
+                        <th>주기</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="task-cell">업무일지 체크 4층 (매주 월요일 요양팀 제출 확인)</td>
+                        <td class="note-cell">지면 파일</td>
+                        <td class="cycle-cell" style="background-color: #E5F3FF;">주 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">매일 일정관리 (아침 라운딩, 저녁 라운딩, 퇴근시 다음날 일정 단톡방 게시)</td>
+                        <td class="note-cell">매일 스케줄 체크</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">요양보호사 급여일지 확인 (요양급여 제공기록) (케어포 잘못된거 수정)</td>
+                        <td class="note-cell">(2,3,4 층)</td>
+                        <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">물품 반출(화,토), 물품 신청(토), 비품 반입 등록 <span style="color: #666; font-size: 0.9em;">(기존 민희진 업무였음)</span></td>
+                        <td class="note-cell">전산/케어포</td>
+                        <td class="cycle-cell" style="background-color: #FFF5E5;">주 2회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">시청, 공단 전화응대 (보고사항 및 어르신 등급갱신 등)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">입소자 현황표 관리 (어르신 입·퇴소시 현황표 수정-각층 게시)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">직원 현황표 관리 (직원 입·퇴사시 현황표 수정-각층 게시)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">직원 입사 면담(상담)</td>
+                        <td class="note-cell">원장님 부재시</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">케어포 직원 근무표 입력 (매월초-수정시)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">직원 정보 관리</td>
+                        <td class="note-cell">케어포 8-1</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">직원 근무일정표 입력</td>
+                        <td class="note-cell">케어포 8-2</td>
+                        <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">주일 근무시 예배 보조 (주보출력 30장 내외/PPT수정-찬양,성경말씀)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #E5F3FF;">주 1회</td>
+                    </tr>
+                    <tr>
+                        <td class="task-cell">각층 업무일지 배부 (매주 또는 매월)</td>
+                        <td class="note-cell"></td>
+                        <td class="cycle-cell" style="background-color: #E5F3FF;">주별/월별</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>
