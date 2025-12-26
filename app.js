@@ -49,19 +49,18 @@ async function waitForAuth() {
                 if (user) {
                     currentUserEmail = user.email;
                     console.log('로그인한 사용자:', currentUserEmail);
-                    console.log('추출된 username:', currentUserEmail.split('@')[0]);
                     clearInterval(checkAuth);
                     resolve();
                 }
             }
-        }, 100);
+        }, 50); // 100ms → 50ms로 단축
         
-        // 10초 후에도 정보가 없으면 일단 진행 (시간 연장)
+        // 2초 후에도 정보가 없으면 일단 진행
         setTimeout(() => {
             console.log('인증 타임아웃 - 현재 이메일:', currentUserEmail);
             clearInterval(checkAuth);
             resolve();
-        }, 10000);
+        }, 2000); // 10000 → 2000으로 단축
     });
 }
 
@@ -116,29 +115,25 @@ function renderContent() {
     const content = document.getElementById('content');
     let staffData = allData[currentStaff];
     
-    // 행정실장 업무는 kiyoung85만 볼 수 있음
+        // 행정실장 업무는 kiyoung85@gmail.com만 볼 수 있음
     if (currentStaff === '행정실장') {
         console.log('행정실장 페이지 접근 - 현재 이메일:', currentUserEmail);
         
         // 이메일이 비어있으면 잠시 대기
         if (!currentUserEmail) {
             console.log('이메일 정보 없음 - 재시도 중...');
-            // 1초 후 다시 시도
-            setTimeout(renderContent, 1000);
+            setTimeout(renderContent, 500); // 1000 → 500으로 단축
             return;
         }
         
-        const username = currentUserEmail.split('@')[0];
-        console.log('추출된 username:', username);
-        
-        if (username !== 'kiyoung85') {
-            console.log('접근 거부: username이 kiyoung85가 아님');
+        // 이메일 전체 비교로 변경
+        if (currentUserEmail !== 'kiyoung85@gmail.com') {
+            console.log('접근 거부: 이메일이 kiyoung85@gmail.com이 아님', currentUserEmail);
             content.innerHTML = `
                 <div style="text-align: center; padding: 100px 20px; color: #666;">
                     <h2>⚠️ 접근 권한이 없습니다</h2>
-                    <p style="margin-top: 20px;">이 페이지는 특정 사용자만 접근할 수 있습니다.</p>
-                    <p style="margin-top: 10px; font-size: 0.9em; color: #999;">(현재 사용자: ${username || '비로그인'})</p>
-                    <p style="margin-top: 10px; font-size: 0.9em; color: #999;">(이메일: ${currentUserEmail})</p>
+                    <p style="margin-top: 20px;">이 페이지는 kiyoung85@gmail.com 사용자만 접근할 수 있습니다.</p>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #999;">(현재 이메일: ${currentUserEmail || '비로그인'})</p>
                     <button onclick="location.href='index.html'" style="margin-top: 30px; padding: 10px 30px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
                         홈으로 돌아가기
                     </button>
@@ -146,7 +141,7 @@ function renderContent() {
             `;
             return;
         }
-        console.log('접근 허용: kiyoung85 사용자');
+        console.log('접근 허용: kiyoung85@gmail.com 사용자');
     }
     
     if (!staffData) {
