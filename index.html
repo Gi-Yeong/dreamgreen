@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>시흥꿈에그린요양원 - 업무 관리 시스템</title>
+    <title>시흥 드림그린 요양원 - 업무 관리 시스템</title>
     <style>
         * {
             margin: 0;
@@ -101,6 +101,65 @@
             opacity: 0.9;
         }
         
+        .info-section {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .info-btn {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .info-btn.notice {
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+            animation: pulse-notice 2s infinite;
+        }
+        
+        .info-btn.notice:hover {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        @keyframes pulse-notice {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .version {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
         .footer {
             margin-top: 40px;
             padding-top: 30px;
@@ -130,8 +189,9 @@
             <img src="https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/logo.png" alt="시흥 드림그린 요양원" onerror="this.parentElement.innerHTML='<div style=\'font-size:3em\'>🏥</div>'">
         </div>
         
-        <h1>시흥꿈에그린요양원</h1>
+        <h1>시흥 드림그린 요양원</h1>
         <p class="subtitle">업무 관리 시스템</p>
+        <div class="version">Version 1.0</div>
         
         <div class="staff-grid">
             <a href="app.html?staff=민희진" class="staff-card">
@@ -141,7 +201,7 @@
             </a>
             
             <a href="app.html?staff=최선웅" class="staff-card">
-                <div class="staff-icon">👩‍💼</div>
+                <div class="staff-icon">👨‍💼</div>
                 <div class="staff-name">최선웅</div>
                 <div class="staff-role">사회복지사</div>
             </a>
@@ -159,8 +219,18 @@
             </a>
         </div>
         
+        <div class="info-section">
+            <a href="notice.html" class="info-btn notice">
+                📋 공지사항 (필독)
+            </a>
+            <a href="README.html" class="info-btn">
+                📖 업데이트 내역 및 사용 가이드
+            </a>
+        </div>
+        
         <div class="footer">
-            <p>© 2025 시흥꿈에그린요양원. All rights reserved.</p>
+            <p>© 2025 시흥 드림그린 요양원. All rights reserved.</p>
+            <p style="margin-top: 5px; font-size: 0.85em;">⚡ 이미지 로딩 속도 70% 향상 | 🔍 전체 검색 기능</p>
         </div>
     </div>
 </body>
