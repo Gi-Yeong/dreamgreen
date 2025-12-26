@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 - 업무 협조 관련 안내사항</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: #f5f5f5;
+            line-height: 1.8;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .notice-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+            margin-top: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+        
+        .home-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .section h2 {
+            color: #e74c3c;
+            margin-bottom: 25px;
+            font-size: 2em;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h3 {
+            color: #c0392b;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .section h4 {
+            color: #2c3e50;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        /* 강조 박스 */
+        .warning-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe5a1 100%);
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+        
+        .danger-box {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c2c7 100%);
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #d1e7dd 0%, #badbcc 100%);
+            border-left: 5px solid #198754;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #cfe2ff 0%, #b6d4fe 100%);
+            border-left: 5px solid #0d6efd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+        
+        /* 테이블 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        table th,
+        table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        table th {
+            background: #e74c3c;
+            color: white;
+            font-weight: bold;
+        }
+        
+        table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* 절차 박스 */
+        .procedure-box {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+        }
+        
+        .procedure-box .step {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .procedure-box .arrow {
+            color: #e74c3c;
+            font-size: 1.5em;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        /* 체크/X 마크 리스트 */
+        .check-list, .x-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .check-list li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+        
+        .check-list li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+        
+        .x-list li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+        
+        .x-list li:before {
+            content: "❌";
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+        
+        /* 강조 텍스트 */
+        .highlight {
+            background: linear-gradient(transparent 60%, #ffeb3b 60%);
+            font-weight: bold;
+            padding: 2px 0;
+        }
+        
+        .important {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+        
+        /* 최종 강조 섹션 */
+        .final-notice {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.3);
+        }
+        
+        .final-notice h2 {
+            color: white;
+            border: none;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .final-notice p {
+            font-size: 1.3em;
+            line-height: 2;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .section {
+                padding: 25px 20px;
+            }
+            
+            .section h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header" style="position: relative;">
+        <a href="index.html" class="home-btn">🏠 홈으로</a>
+        <h1>📋 공지사항</h1>
+        <p class="subtitle">업무 협조 관련 안내사항</p>
+        <div class="notice-badge">⚠️ 필독 사항</div>
+    </div>
+    
+    <div class="container">
+        <!-- 직군 간 관계 -->
+        <div class="section">
+            <h2>🤝 직군 간 관계에 대한 명확한 이해</h2>
+            
+            <p style="font-size: 1.2em; margin-bottom: 20px;">
+                우리 시설의 모든 직군은 <span class="highlight">동등한 관계</span>입니다.
+            </p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>직군</th>
+                        <th>관계</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>사회복지사</td>
+                        <td><strong>동등</strong></td>
+                    </tr>
+                    <tr>
+                        <td>요양보호사</td>
+                        <td><strong>동등</strong></td>
+                    </tr>
+                    <tr>
+                        <td>간호조무사</td>
+                        <td><strong>동등</strong></td>
+                    </tr>
+                    <tr>
+                        <td>물리치료사</td>
+                        <td><strong>동등</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <strong>⚠️ 중요:</strong> 상하 관계가 아니라 <span class="highlight">역할의 차이만 있을 뿐</span>입니다.
+            </div>
+            
+            <p style="font-size: 1.1em; margin-top: 25px;">
+                사회복지팀이 요양원 행정 업무를 전반적으로 담당하기 때문에 다른 직군보다 우위에 있다고 느낄 수 있으나, 
+                <span class="important">이는 명백히 잘못된 인식입니다.</span>
+            </p>
+        </div>
+        
+        <!-- 업무 협조 요청 절차 -->
+        <div class="section">
+            <h2>🔄 업무 협조 요청 절차</h2>
+            
+            <h3>다른 팀의 협조가 필요한 경우</h3>
+            
+            <div class="procedure-box">
+                <div class="step">1단계: 행정실장 또는 허은지 복지과장을 통해 진행</div>
+                <div class="arrow">↓</div>
+                <div class="step">2단계: 두 분 모두 부재 시 → 시설장님께 요청</div>
+            </div>
+            
+            <h3 style="margin-top: 40px;">❌ 금지 사항</h3>
+            
+            <div class="danger-box">
+                <strong style="font-size: 1.2em;">직접적인 일방적 업무 지시 절대 금지</strong>
+            </div>
+        </div>
+        
+        <!-- 사회복지사 간 업무 처리 -->
+        <div class="section">
+            <h2>👥 사회복지사 간 업무 처리 원칙</h2>
+            
+            <h3>✅ 가능한 것</h3>
+            <ul class="check-list">
+                <li>담당자가 업무를 놓친 경우 <strong>리마인드</strong></li>
+            </ul>
+            
+            <h3>❌ 불가능한 것</h3>
+            <ul class="x-list">
+                <li>사회복지사끼리 <strong>업무 지시</strong></li>
+                <li>업무 분장표를 무시한 <strong>임의 지시</strong></li>
+            </ul>
+            
+            <div class="info-box">
+                <strong>💡 원칙:</strong> 업무 분장표에 명시된 담당자가 해당 업무를 수행합니다.
+            </div>
+        </div>
+        
+        <!-- 업무 요청 처리 원칙 -->
+        <div class="section">
+            <h2>🔁 업무 요청 받았을 때 처리 원칙</h2>
+            
+            <h3>상황: 내 업무가 아니지만 담당자가 부재중인 경우</h3>
+            
+            <h4>❌ 잘못된 대응</h4>
+            <ul class="x-list">
+                <li>"내 업무가 아니니 모른다"</li>
+                <li>"담당자에게 물어보세요" (무조건 넘기기)</li>
+            </ul>
+            
+            <h4>✅ 올바른 대응</h4>
+            <ul class="check-list">
+                <li><strong>사회복지사 업무</strong>이고 <strong>본인이 진행 가능</strong>하다면 → <strong>진행</strong></li>
+                <li>협력적 태도로 업무 처리</li>
+            </ul>
+            
+            <div class="success-box">
+                <strong>💡 핵심:</strong> 업무 분장은 명확히 하되, <span class="highlight">팀워크와 유연성</span>도 중요합니다.
+            </div>
+        </div>
+        
+        <!-- 업무 분장 관련 요청사항 -->
+        <div class="section">
+            <h2>📝 업무 분장 관련 요청사항</h2>
+            
+            <h3>1️⃣ 업무 분장표에 없는 업무 발견 시</h3>
+            
+            <div class="procedure-box">
+                <div class="step">발견</div>
+                <div class="arrow">↓</div>
+                <div class="step">행정실장/복지과장에게 보고</div>
+                <div class="arrow">↓</div>
+                <div class="step">업무 파악</div>
+                <div class="arrow">↓</div>
+                <div class="step">분장 반영</div>
+            </div>
+            
+            <h3>2️⃣ 업무 주기가 맞지 않는 경우</h3>
+            
+            <div class="info-box">
+                <strong>이유와 함께</strong> 말씀해 주시면 검토 후 반영하겠습니다.
+            </div>
+        </div>
+        
+        <!-- 최종 강조 -->
+        <div class="final-notice">
+            <h2>⭐ 필수 준수 사항</h2>
+            <p>위 사항들은 원활한 <strong>팀워크</strong>와 <strong>상호 존중</strong>을 위한 필수 사항입니다.</p>
+            <p style="font-size: 1.5em; margin-top: 20px;">🙏 <strong>반드시 준수해 주시기 바랍니다.</strong></p>
+        </div>
+    </div>
+</body>
+</html>
