@@ -138,7 +138,7 @@ if (currentStaff === '행정실장') {
     }
     
     // 이메일 전체 비교로 변경
-    if (currentUserEmail !== 'kiyoung85@gmail.com') {
+    if (currentUserEmail !== 'kiyoung85@gmail.com' || '') {
         console.log('접근 거부: 이메일이 kiyoung85@gmail.com이 아님', currentUserEmail);
         content.innerHTML = `
             <div style="text-align: center; padding: 100px 20px; color: #666;">
