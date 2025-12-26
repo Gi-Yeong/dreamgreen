@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>민희진 사회복지사 업무</title>
+    <title>민희진 업무</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * {
@@ -175,7 +175,6 @@
             border-radius: 4px;
         }
         
-        /* 이미지 모달 스타일 */
         .modal {
             display: none;
             position: fixed;
@@ -232,7 +231,6 @@
             color: #ff5555;
         }
         
-        /* 이미지 네비게이션 버튼 */
         .nav-button {
             position: absolute;
             top: 50%;
@@ -260,7 +258,6 @@
             right: 30px;
         }
         
-        /* 이미지 컨트롤 바 */
         .image-controls {
             position: absolute;
             bottom: 30px;
@@ -324,7 +321,6 @@
             font-size: 1.2em;
         }
         
-        /* 다운로드 상태 표시 */
         .download-status {
             position: fixed;
             bottom: 30px;
@@ -377,7 +373,6 @@
             transition: width 0.3s ease;
         }
         
-        /* 주기별 업무 모달 */
         .cycle-modal {
             display: none;
             position: fixed;
@@ -497,7 +492,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>민희진 사회복지사 업무</h1>
+        <h1>민희진 업무</h1>
         
         <div class="legend">
             <h2>📋 주기별 색상 범례 (클릭하여 해당 주기 업무 보기)</h2>
@@ -539,7 +534,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2001.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2001-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2001-3.jpg'])">평가지표 1: 운영규정</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('01')">평가지표 1: 운영규정</div>
             <table>
                 <thead>
                     <tr>
@@ -560,7 +555,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2002.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2002-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2002-3.jpg'])">평가지표 2: 사업계획 및 평가</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('02')">평가지표 2: 사업계획 및 평가</div>
             <table>
                 <thead>
                     <tr>
@@ -581,7 +576,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2003.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2003-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2003-3.jpg'])">평가지표 3: 운영위원회</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('03')">평가지표 3: 운영위원회</div>
             <table>
                 <thead>
                     <tr>
@@ -607,7 +602,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004-3.jpg'])">평가지표 4: 직원교육</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('04')">평가지표 4: 직원교육</div>
             <table>
                 <thead>
                     <tr>
@@ -628,7 +623,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2006.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2006-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2006-3.jpg'])">평가지표 6: 직원권익향상</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('06')">평가지표 6: 직원권익향상</div>
             <table>
                 <thead>
                     <tr>
@@ -649,7 +644,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2008.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2008-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2008-3.jpg'])">평가지표 8: 질향상노력</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('08')">평가지표 8: 질향상노력</div>
             <table>
                 <thead>
                     <tr>
@@ -670,7 +665,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2013.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2013-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2013-3.jpg'])">평가지표 13: 수급자(보호자) 참여강화</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('13')">평가지표 13: 수급자(보호자) 참여강화</div>
             <table>
                 <thead>
                     <tr>
@@ -691,7 +686,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2014.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2014-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2014-3.jpg'])">평가지표 14: 가족 및 지역사회 교류</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('14')">평가지표 14: 가족 및 지역사회 교류</div>
             <table>
                 <thead>
                     <tr>
@@ -737,7 +732,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2016.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2016-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2016-3.jpg'])">평가지표 16: 개별욕구존중</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('16')">평가지표 16: 개별욕구존중</div>
             <table>
                 <thead>
                     <tr>
@@ -763,7 +758,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2018.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2018-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2018-3.jpg'])">평가지표 18: 정보제공</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('18')">평가지표 18: 정보제공</div>
             <table>
                 <thead>
                     <tr>
@@ -789,7 +784,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2022.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2022-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2022-3.jpg'])">평가지표 22: 감염관리</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('22')">평가지표 22: 감염관리</div>
             <table>
                 <thead>
                     <tr>
@@ -810,7 +805,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024-3.jpg'])">평가지표 24: 통합적사정</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('24')">평가지표 24: 통합적사정</div>
             <table>
                 <thead>
                     <tr>
@@ -836,7 +831,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025-3.jpg'])">평가지표 25: 급여제공계획수립 및 제공</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('25')">평가지표 25: 급여제공계획수립 및 제공</div>
             <table>
                 <thead>
                     <tr>
@@ -857,7 +852,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2031.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2031-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2031-3.jpg'])">평가지표 31: 신체기능 프로그램 **(기존 물리치료사 업무였음)**</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('31')">평가지표 31: 신체기능 프로그램 **(기존 물리치료사 업무였음)**</div>
             <table>
                 <thead>
                     <tr>
@@ -928,7 +923,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2033.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2033-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2033-3.jpg'])">평가지표 33: 여가활동 프로그램</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('33')">평가지표 33: 여가활동 프로그램</div>
             <table>
                 <thead>
                     <tr>
@@ -1009,7 +1004,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2037.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2037-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2037-3.jpg'])">평가지표 37: 급여제공결과평가</div>
+            <div class="section-title clickable" onclick="openImageModalWithAutoDetect('37')">평가지표 37: 급여제공결과평가</div>
             <table>
                 <thead>
                     <tr>
@@ -1102,7 +1097,6 @@
 
     </div>
     
-    <!-- 이미지 모달 -->
     <div id="imageModal" class="modal">
         <div class="modal-content-wrapper">
             <span class="close" onclick="closeImageModal()">&times;</span>
@@ -1110,7 +1104,7 @@
             <button class="nav-button prev" onclick="changeImage(-1)">&#10094;</button>
             <button class="nav-button next" onclick="changeImage(1)">&#10095;</button>
             
-            <div id="loading" class="loading">이미지 로딩 중...</div>
+            <div id="loading" class="loading">이미지 검색 중...</div>
             <img class="modal-content" id="modalImage" style="display: none;" crossorigin="anonymous">
             <div id="imageError" class="image-error" style="display: none;">
                 이미지를 불러올 수 없습니다.
@@ -1127,7 +1121,6 @@
         </div>
     </div>
     
-    <!-- 주기별 업무 모달 -->
     <div id="cycleModal" class="cycle-modal">
         <div class="cycle-modal-content">
             <div class="cycle-modal-header">
@@ -1141,7 +1134,6 @@
         </div>
     </div>
     
-    <!-- 다운로드 상태 표시 -->
     <div id="downloadStatus" class="download-status">
         <div id="downloadStatusText"></div>
         <div class="progress-bar" id="progressBar" style="display: none;">
@@ -1150,10 +1142,12 @@
     </div>
     
     <script>
+        const GITHUB_BASE_URL = "https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images";
         let currentImages = [];
         let currentImageIndex = 0;
         let currentZoom = 1;
         let validImageUrls = [];
+        let currentIndicatorNum = null;
         
         const COLORS = {
             '매일': '#FFE5E5',
@@ -1165,6 +1159,79 @@
             '연 1회': '#FFFFE5',
             '수시': '#F0F0F0'
         };
+        
+        // 이미지 URL 생성 함수
+        function generateImageUrl(indicatorNum, imageNum) {
+            const folder = `metrics${indicatorNum}`;
+            const fileName = encodeURIComponent(`평가지표 ${indicatorNum}-${imageNum}.jpg`);
+            return `${GITHUB_BASE_URL}/${folder}/${fileName}`;
+        }
+        
+        // 이미지 존재 여부 확인
+        async function checkImageExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+            } catch {
+                return false;
+            }
+        }
+        
+        // 모든 이미지 자동 감지
+        async function detectAllImages(indicatorNum) {
+            const detectedUrls = [];
+            const maxAttempts = 20; // 최대 20개까지 시도
+            
+            for (let i = 1; i <= maxAttempts; i++) {
+                const url = generateImageUrl(indicatorNum, i);
+                const exists = await checkImageExists(url);
+                
+                if (exists) {
+                    detectedUrls.push(url);
+                } else {
+                    // 연속으로 2개 실패하면 종료
+                    if (i > 1 && detectedUrls.length > 0) {
+                        const prevUrl = generateImageUrl(indicatorNum, i - 1);
+                        const prevExists = await checkImageExists(prevUrl);
+                        if (!prevExists) break;
+                    }
+                    // 첫 번째 이미지가 없으면 종료
+                    if (i === 1) break;
+                }
+            }
+            
+            return detectedUrls;
+        }
+        
+        // 이미지 모달 열기 (자동 감지)
+        async function openImageModalWithAutoDetect(indicatorNum) {
+            currentIndicatorNum = indicatorNum;
+            const modal = document.getElementById('imageModal');
+            const loading = document.getElementById('loading');
+            const imageError = document.getElementById('imageError');
+            const modalImg = document.getElementById('modalImage');
+            
+            modal.style.display = "block";
+            loading.style.display = "block";
+            loading.textContent = "이미지 검색 중...";
+            modalImg.style.display = "none";
+            imageError.style.display = "none";
+            
+            // 이미지 자동 감지
+            currentImages = await detectAllImages(indicatorNum);
+            validImageUrls = [...currentImages];
+            
+            if (currentImages.length === 0) {
+                loading.style.display = "none";
+                imageError.textContent = "평가지표 이미지를 찾을 수 없습니다.";
+                imageError.style.display = "block";
+                return;
+            }
+            
+            currentImageIndex = 0;
+            currentZoom = 1;
+            loadImage(0);
+        }
         
         function showDownloadStatus(message, type, showProgress = false) {
             const status = document.getElementById('downloadStatus');
@@ -1192,24 +1259,13 @@
             statusText.textContent = `다운로드 중... (${current}/${total})`;
         }
         
-        function openImageModal(imageUrls) {
-            currentImages = imageUrls.map(url => url.replace(/'/g, ''));
-            currentImageIndex = 0;
-            currentZoom = 1;
-            validImageUrls = [];
-            
-            const modal = document.getElementById('imageModal');
-            modal.style.display = "block";
-            
-            loadImage(0);
-        }
-        
         async function loadImage(index) {
             const modalImg = document.getElementById('modalImage');
             const loading = document.getElementById('loading');
             const imageError = document.getElementById('imageError');
             
             loading.style.display = "block";
+            loading.textContent = "이미지 로딩 중...";
             modalImg.style.display = "none";
             imageError.style.display = "none";
             
@@ -1220,19 +1276,13 @@
             modalImg.onload = function() {
                 loading.style.display = "none";
                 modalImg.style.display = "block";
-                if (!validImageUrls.includes(currentImages[index])) {
-                    validImageUrls.push(currentImages[index]);
-                }
                 updateCounter();
                 updateDownloadAllButton();
             };
             
             modalImg.onerror = function() {
-                if (index === 0) {
-                    loading.style.display = "none";
-                    imageError.style.display = "block";
-                    updateDownloadAllButton();
-                }
+                loading.style.display = "none";
+                imageError.style.display = "block";
             };
         }
         
@@ -1240,7 +1290,7 @@
             currentImageIndex += direction;
             
             if (currentImageIndex < 0) {
-                currentImageIndex = Math.max(0, validImageUrls.length - 1);
+                currentImageIndex = currentImages.length - 1;
             } else if (currentImageIndex >= currentImages.length) {
                 currentImageIndex = 0;
             }
@@ -1353,10 +1403,7 @@
                 const zipBlob = await zip.generateAsync({ type: 'blob' });
                 const zipUrl = window.URL.createObjectURL(zipBlob);
                 
-                const urlParts = validImageUrls[0].split('/');
-                const firstFilename = decodeURIComponent(urlParts[urlParts.length - 1]);
-                const indicator = firstFilename.split(' ')[1].split('.')[0].split('-')[0];
-                const zipFilename = `평가지표_${indicator}_전체.zip`;
+                const zipFilename = `평가지표_${currentIndicatorNum}_전체.zip`;
                 
                 const link = document.createElement('a');
                 link.href = zipUrl;
