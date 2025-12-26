@@ -7,8 +7,8 @@ async function loadVersion() {
         const response = await fetch('VERSION.json');
         const versionData = await response.json();
         
-        // 모든 .version 클래스를 가진 요소 찾기
-        const versionElements = document.querySelectorAll('.version, .version-small');
+        // 모든 버전 표시 요소 찾기 (여러 클래스 지원)
+        const versionElements = document.querySelectorAll('.version, .version-small, .version-info-login');
         
         versionElements.forEach(element => {
             // 기존 텍스트 유지하면서 버전만 업데이트
