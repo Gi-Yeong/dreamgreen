@@ -65,15 +65,38 @@ async function waitForAuth() {
 
 // 데이터 로드
 async function loadData() {
+    const content = document.getElementById('content');
+    
+    // 로딩 표시
+    content.innerHTML = `
+        <div style="text-align: center; padding: 100px 20px;">
+            <div style="font-size: 3em; margin-bottom: 20px;">📊</div>
+            <h2>데이터를 불러오는 중입니다...</h2>
+            <p style="margin-top: 10px; color: #666;">잠시만 기다려주세요.</p>
+        </div>
+    `;
+    
     try {
+        console.log('data.json 로드 시작...');
         const dataResponse = await fetch('data.json');
         allData = await dataResponse.json();
+        console.log('data.json 로드 성공:', Object.keys(allData));
         
         const colorsResponse = await fetch('colors.json');
         colors = await colorsResponse.json();
+        console.log('colors.json 로드 성공');
     } catch (error) {
         console.error('데이터 로드 실패:', error);
-        alert('데이터를 불러올 수 없습니다.');
+        content.innerHTML = `
+            <div style="text-align: center; padding: 100px 20px; color: #e74c3c;">
+                <h2>❌ 데이터 로드 실패</h2>
+                <p style="margin-top: 20px;">데이터를 불러올 수 없습니다.</p>
+                <p style="margin-top: 10px; font-size: 0.9em;">오류: ${error.message}</p>
+                <button onclick="location.reload()" style="margin-top: 30px; padding: 10px 30px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    다시 시도
+                </button>
+            </div>
+        `;
     }
 }
 
@@ -87,12 +110,17 @@ function renderContent() {
     
     // 행정실장 업무는 kiyoung85만 볼 수 있음
     if (currentStaff === '행정실장') {
+        console.log('행정실장 페이지 접근 - 현재 이메일:', currentUserEmail);
         const username = currentUserEmail.split('@')[0];
+        console.log('추출된 username:', username);
+        
         if (username !== 'kiyoung85') {
+            console.log('접근 거부: username이 kiyoung85가 아님');
             content.innerHTML = `
                 <div style="text-align: center; padding: 100px 20px; color: #666;">
                     <h2>⚠️ 접근 권한이 없습니다</h2>
                     <p style="margin-top: 20px;">이 페이지는 특정 사용자만 접근할 수 있습니다.</p>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #999;">(현재 사용자: ${username})</p>
                     <button onclick="location.href='index.html'" style="margin-top: 30px; padding: 10px 30px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
                         홈으로 돌아가기
                     </button>
@@ -100,6 +128,7 @@ function renderContent() {
             `;
             return;
         }
+        console.log('접근 허용: kiyoung85 사용자');
     }
     
     if (!staffData) {
