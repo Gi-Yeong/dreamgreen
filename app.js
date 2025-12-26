@@ -1,7 +1,8 @@
 // 업무 관리 시스템 JavaScript
 
 const GITHUB_BASE_URL = "https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images";
-const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'PNG', 'JPG', 'JPEG'];
+// 우선순위: 일반적으로 가장 많이 사용되는 확장자 먼저 (소문자)
+const IMAGE_EXTENSIONS = ['jpg', 'png', 'jpeg', 'JPG', 'PNG', 'JPEG'];
 
 let allData = {};
 let colors = {};
@@ -11,6 +12,12 @@ let currentImageIndex = 0;
 let currentZoom = 1;
 let validImageUrls = [];
 let currentIndicatorNum = null;
+
+// 이미지 URL 캐시 (이미 확인한 URL은 다시 확인하지 않음)
+const imageCache = new Map();
+
+// 병렬 요청 제한 (동시에 너무 많은 요청 방지)
+const MAX_CONCURRENT_REQUESTS = 6;
 
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', async function() {
@@ -214,47 +221,87 @@ function generateImageUrls(indicatorNum, imageNum) {
     });
 }
 
-// 이미지 존재 확인
+// 이미지 존재 확인 (캐시 사용)
 async function checkImageExists(url) {
+    // 캐시 확인
+    if (imageCache.has(url)) {
+        return imageCache.get(url);
+    }
+    
     try {
-        const response = await fetch(url, { method: 'HEAD' });
-        return response.ok;
+        // 타임아웃 설정 (2초)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        
+        const response = await fetch(url, { 
+            method: 'HEAD',
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        const exists = response.ok;
+        imageCache.set(url, exists);
+        return exists;
     } catch {
+        imageCache.set(url, false);
         return false;
     }
 }
 
-// 존재하는 이미지 찾기
+// 존재하는 이미지 찾기 (병렬 처리)
 async function findExistingImage(indicatorNum, imageNum) {
     const urls = generateImageUrls(indicatorNum, imageNum);
     
-    for (const url of urls) {
-        const exists = await checkImageExists(url);
-        if (exists) {
-            return url;
-        }
-    }
+    // 병렬로 모든 확장자 확인 (더 빠름)
+    const checks = urls.map(url => 
+        checkImageExists(url).then(exists => ({ url, exists }))
+    );
     
-    return null;
+    const results = await Promise.all(checks);
+    
+    // 첫 번째로 존재하는 URL 반환
+    const found = results.find(r => r.exists);
+    return found ? found.url : null;
 }
 
-// 모든 이미지 자동 감지
+// 모든 이미지 자동 감지 (병렬 처리 및 조기 종료)
 async function detectAllImages(indicatorNum) {
     const detectedUrls = [];
     const maxAttempts = 20;
-    let consecutiveFailures = 0;
     
-    for (let i = 1; i <= maxAttempts; i++) {
-        const url = await findExistingImage(indicatorNum, i);
+    // 배치 단위로 처리 (6개씩)
+    for (let batch = 0; batch < Math.ceil(maxAttempts / MAX_CONCURRENT_REQUESTS); batch++) {
+        const startIdx = batch * MAX_CONCURRENT_REQUESTS + 1;
+        const endIdx = Math.min(startIdx + MAX_CONCURRENT_REQUESTS - 1, maxAttempts);
         
-        if (url) {
-            detectedUrls.push(url);
-            consecutiveFailures = 0;
-        } else {
-            consecutiveFailures++;
-            if (consecutiveFailures >= 2) {
-                break;
+        // 현재 배치의 이미지들을 병렬로 검색
+        const batchPromises = [];
+        for (let i = startIdx; i <= endIdx; i++) {
+            batchPromises.push(
+                findExistingImage(indicatorNum, i).then(url => ({ index: i, url }))
+            );
+        }
+        
+        const batchResults = await Promise.all(batchPromises);
+        
+        // 결과 처리
+        let foundInBatch = false;
+        for (const result of batchResults.sort((a, b) => a.index - b.index)) {
+            if (result.url) {
+                detectedUrls.push(result.url);
+                foundInBatch = true;
             }
+        }
+        
+        // 이번 배치에서 아무것도 못 찾았으면 종료
+        if (!foundInBatch && detectedUrls.length > 0) {
+            break;
+        }
+        
+        // 첫 번째 배치에서 아무것도 없으면 종료
+        if (!foundInBatch && batch === 0) {
+            break;
         }
     }
     
@@ -287,7 +334,21 @@ async function openImageModalWithAutoDetect(indicatorNum) {
     
     currentImageIndex = 0;
     currentZoom = 1;
+    
+    // 첫 번째 이미지 로드
     loadImage(0);
+    
+    // 나머지 이미지들을 백그라운드에서 미리 로드
+    preloadImages();
+}
+
+// 이미지 미리 로드 (백그라운드)
+function preloadImages() {
+    // 첫 번째는 이미 로드했으므로 2번째부터
+    for (let i = 1; i < currentImages.length; i++) {
+        const img = new Image();
+        img.src = currentImages[i];
+    }
 }
 
 function showDownloadStatus(message, type, showProgress = false) {
