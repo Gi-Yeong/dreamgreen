@@ -209,7 +209,7 @@
         <a href="index.html" class="home-btn">🏠 홈으로</a>
         <h1>시흥꿈에그린요양원</h1>
         <p>업무 관리 시스템 - 업데이트 내역 및 사용 가이드</p>
-        <div class="version-badge">Version 1.0</div>
+        <div class="version-badge">Version 1.2.1</div>
     </div>
     
     <div class="container">
@@ -471,6 +471,394 @@ images/
                 <li>✅ 인쇄 최적화</li>
             </ul>
         </div>
+        
+        <div class="section">
+            <h2>🔄 버전 히스토리</h2>
+            
+            <!-- 버전 필터 -->
+            <div class="version-filter">
+                <button class="filter-btn active" onclick="filterVersions('all')">전체</button>
+                <button class="filter-btn" onclick="filterVersions('major')">Major</button>
+                <button class="filter-btn" onclick="filterVersions('minor')">Minor</button>
+                <button class="filter-btn" onclick="filterVersions('patch')">Patch</button>
+            </div>
+            
+            <!-- 버전 게시판 -->
+            <div class="version-board">
+                <!-- v1.2.1 -->
+                <div class="version-item" data-type="patch">
+                    <div class="version-header" onclick="toggleVersion(this)">
+                        <div class="version-info">
+                            <span class="version-number">v1.2.1</span>
+                            <span class="version-badge badge-patch">Patch</span>
+                            <span class="version-date">2025-12-26</span>
+                        </div>
+                        <div class="version-title">🎨 UI 개선</div>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="version-content">
+                        <div class="version-summary">
+                            로고 표시 개선 및 README 게시판 형태로 재구성
+                        </div>
+                        <ul class="version-changes">
+                            <li>로그인 페이지 로고 비율 수정 (가로형 로고에 최적화)</li>
+                            <li>README.html을 게시판 형태로 개선</li>
+                            <li>버전 히스토리 토글 기능 추가</li>
+                            <li>버전 필터 기능 추가 (전체/Major/Minor/Patch)</li>
+                        </ul>
+                        <div class="version-files">
+                            <strong>📁 변경된 파일:</strong>
+                            <span class="file-tag">login.html</span>
+                            <span class="file-tag">README.html</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- v1.2.0 -->
+                <div class="version-item" data-type="minor">
+                    <div class="version-header" onclick="toggleVersion(this)">
+                        <div class="version-info">
+                            <span class="version-number">v1.2.0</span>
+                            <span class="version-badge badge-minor">Minor</span>
+                            <span class="version-date">2025-12-26</span>
+                        </div>
+                        <div class="version-title">🛠️ 개발 경험 개선</div>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="version-content">
+                        <div class="version-summary">
+                            Firebase 설정 파일 통합으로 유지보수성 대폭 향상
+                        </div>
+                        <ul class="version-changes">
+                            <li><strong>Firebase 설정 통합:</strong> firebase-config.js 파일 하나로 통합</li>
+                            <li>4개 파일 수정 → 1개 파일만 수정으로 간소화</li>
+                            <li>코드 유지보수성 대폭 향상</li>
+                            <li>설정 변경 시간 80% 단축 (10분 → 2분)</li>
+                            <li>로그인 페이지에 실제 로고 이미지 적용</li>
+                        </ul>
+                        <div class="version-files">
+                            <strong>📁 변경된 파일:</strong>
+                            <span class="file-tag new">firebase-config.js</span>
+                            <span class="file-tag">login.html</span>
+                            <span class="file-tag">index.html</span>
+                            <span class="file-tag">app.html</span>
+                            <span class="file-tag">auth.js</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- v1.1.0 -->
+                <div class="version-item" data-type="minor">
+                    <div class="version-header" onclick="toggleVersion(this)">
+                        <div class="version-info">
+                            <span class="version-number">v1.1.0</span>
+                            <span class="version-badge badge-minor">Minor</span>
+                            <span class="version-date">2025-12-26</span>
+                        </div>
+                        <div class="version-title">🎨 UI/UX 개선</div>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="version-content">
+                        <div class="version-summary">
+                            사용자 정보 표시 UI 개선 및 레이아웃 최적화
+                        </div>
+                        <ul class="version-changes">
+                            <li>버전 배지와 직원 카드 간격 조정 (40px)</li>
+                            <li>로고 대체 아이콘 확인 및 유지 (🏥)</li>
+                            <li>사용자 정보 UI 개선 (흰색 박스, 검은색 글자)</li>
+                            <li>모든 페이지에 로그아웃 버튼 추가</li>
+                        </ul>
+                        <div class="version-files">
+                            <strong>📁 변경된 파일:</strong>
+                            <span class="file-tag">index.html</span>
+                            <span class="file-tag">app.html</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- v1.0.0 -->
+                <div class="version-item" data-type="major">
+                    <div class="version-header" onclick="toggleVersion(this)">
+                        <div class="version-info">
+                            <span class="version-number">v1.0.0</span>
+                            <span class="version-badge badge-major">Major</span>
+                            <span class="version-date">2025-12-26</span>
+                        </div>
+                        <div class="version-title">🚀 초기 릴리즈</div>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="version-content">
+                        <div class="version-summary">
+                            시흥꿈에그린요양원 업무 관리 시스템 첫 출시
+                        </div>
+                        <ul class="version-changes">
+                            <li>직원별 업무 관리 시스템</li>
+                            <li>통합 검색 기능</li>
+                            <li>평가지표 이미지 뷰어</li>
+                            <li>이미지 로딩 속도 70% 최적화</li>
+                            <li>공지사항 페이지</li>
+                            <li>Firebase Authentication 통합</li>
+                            <li>로그인/로그아웃 기능</li>
+                            <li>요양원 이름: 시흥꿈에그린요양원</li>
+                            <li>최선웅 선생님 이모지 변경 (👩‍💼)</li>
+                        </ul>
+                        <div class="version-files">
+                            <strong>📁 주요 파일:</strong>
+                            <span class="file-tag new">index.html</span>
+                            <span class="file-tag new">app.html</span>
+                            <span class="file-tag new">login.html</span>
+                            <span class="file-tag new">notice.html</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            // 버전 토글
+            function toggleVersion(header) {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('.toggle-icon');
+                const isOpen = content.style.display === 'block';
+                
+                content.style.display = isOpen ? 'none' : 'block';
+                icon.textContent = isOpen ? '▼' : '▲';
+                header.parentElement.classList.toggle('active', !isOpen);
+            }
+            
+            // 버전 필터
+            function filterVersions(type) {
+                const items = document.querySelectorAll('.version-item');
+                const buttons = document.querySelectorAll('.filter-btn');
+                
+                buttons.forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                items.forEach(item => {
+                    if (type === 'all' || item.dataset.type === type) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+            
+            // 첫 번째 버전만 열어두기
+            document.addEventListener('DOMContentLoaded', function() {
+                const firstItem = document.querySelector('.version-item');
+                if (firstItem) {
+                    const header = firstItem.querySelector('.version-header');
+                    toggleVersion(header);
+                }
+            });
+        </script>
+        
+        <style>
+            .version-filter {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 30px;
+                flex-wrap: wrap;
+            }
+            
+            .filter-btn {
+                padding: 10px 20px;
+                border: 2px solid #ecf0f1;
+                background: white;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+            
+            .filter-btn:hover {
+                border-color: #667eea;
+                background: #f8f9fa;
+            }
+            
+            .filter-btn.active {
+                background: #667eea;
+                color: white;
+                border-color: #667eea;
+            }
+            
+            .version-board {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .version-item {
+                background: white;
+                border: 2px solid #ecf0f1;
+                border-radius: 12px;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .version-item:hover {
+                border-color: #667eea;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            }
+            
+            .version-item.active {
+                border-color: #667eea;
+            }
+            
+            .version-header {
+                padding: 20px;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 15px;
+                background: #f8f9fa;
+                transition: background 0.3s ease;
+            }
+            
+            .version-header:hover {
+                background: #ecf0f1;
+            }
+            
+            .version-info {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            
+            .version-number {
+                font-size: 1.3em;
+                font-weight: bold;
+                color: #2c3e50;
+            }
+            
+            .version-badge {
+                padding: 4px 12px;
+                border-radius: 12px;
+                font-size: 0.85em;
+                font-weight: bold;
+            }
+            
+            .badge-major {
+                background: #e74c3c;
+                color: white;
+            }
+            
+            .badge-minor {
+                background: #3498db;
+                color: white;
+            }
+            
+            .badge-patch {
+                background: #2ecc71;
+                color: white;
+            }
+            
+            .version-date {
+                color: #95a5a6;
+                font-size: 0.9em;
+            }
+            
+            .version-title {
+                font-size: 1.1em;
+                font-weight: bold;
+                color: #2c3e50;
+                flex: 1;
+            }
+            
+            .toggle-icon {
+                color: #667eea;
+                font-size: 1.2em;
+                transition: transform 0.3s ease;
+            }
+            
+            .version-content {
+                padding: 0 20px;
+                display: none;
+                max-height: 0;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .version-item.active .version-content {
+                padding: 20px;
+                max-height: 1000px;
+            }
+            
+            .version-summary {
+                background: linear-gradient(135deg, #fff3cd 0%, #ffe5a1 100%);
+                padding: 15px;
+                border-radius: 8px;
+                border-left: 4px solid #ffc107;
+                margin-bottom: 20px;
+                font-weight: 500;
+            }
+            
+            .version-changes {
+                list-style: none;
+                padding: 0;
+                margin: 0 0 20px 0;
+            }
+            
+            .version-changes li {
+                padding: 10px 0 10px 30px;
+                position: relative;
+                border-bottom: 1px solid #ecf0f1;
+            }
+            
+            .version-changes li:before {
+                content: "✓";
+                position: absolute;
+                left: 0;
+                color: #2ecc71;
+                font-weight: bold;
+                font-size: 1.2em;
+            }
+            
+            .version-changes li:last-child {
+                border-bottom: none;
+            }
+            
+            .version-files {
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin-top: 15px;
+            }
+            
+            .file-tag {
+                display: inline-block;
+                background: #667eea;
+                color: white;
+                padding: 4px 10px;
+                border-radius: 6px;
+                font-size: 0.85em;
+                margin: 5px 5px 5px 0;
+                font-family: 'Courier New', monospace;
+            }
+            
+            .file-tag.new {
+                background: #2ecc71;
+            }
+            
+            @media (max-width: 768px) {
+                .version-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                
+                .version-info {
+                    width: 100%;
+                }
+                
+                .toggle-icon {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                }
+            }
+        </style>
         
         <div class="section">
             <h2>📞 문의</h2>

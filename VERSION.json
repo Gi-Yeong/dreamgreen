@@ -1,6 +1,17 @@
 {
-  "current": "1.2.0",
+  "current": "1.2.1",
   "history": [
+    {
+      "version": "1.2.1",
+      "date": "2025-12-26",
+      "type": "patch",
+      "changes": [
+        "로그인 페이지 로고 비율 수정 (가로형 로고에 최적화)",
+        "README.html을 게시판 형태로 개선",
+        "버전 히스토리 토글 기능 추가",
+        "버전 필터 기능 추가 (전체/Major/Minor/Patch)"
+      ]
+    },
     {
       "version": "1.2.0",
       "date": "2025-12-26",
