@@ -12,6 +12,7 @@ let currentImageIndex = 0;
 let currentZoom = 1;
 let validImageUrls = [];
 let currentIndicatorNum = null;
+let currentUserEmail = ''; // 현재 로그인한 사용자 이메일
 
 // 이미지 URL 캐시 (이미 확인한 URL은 다시 확인하지 않음)
 const imageCache = new Map();
@@ -21,6 +22,9 @@ const MAX_CONCURRENT_REQUESTS = 6;
 
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', async function() {
+    // Firebase에서 사용자 정보 가져오기 (비동기 처리)
+    await waitForAuth();
+    
     // URL 파라미터에서 직원 이름 가져오기
     const params = new URLSearchParams(window.location.search);
     currentStaff = params.get('staff') || '민희진';
@@ -34,6 +38,30 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 검색 이벤트 리스너
     document.getElementById('searchInput').addEventListener('input', handleSearch);
 });
+
+// Firebase 인증 대기
+async function waitForAuth() {
+    return new Promise((resolve) => {
+        // Firebase가 로드되고 auth 객체가 준비될 때까지 대기
+        const checkAuth = setInterval(() => {
+            if (window.getCurrentUser) {
+                const user = window.getCurrentUser();
+                if (user) {
+                    currentUserEmail = user.email;
+                    console.log('로그인한 사용자:', currentUserEmail);
+                    clearInterval(checkAuth);
+                    resolve();
+                }
+            }
+        }, 100);
+        
+        // 5초 후에도 정보가 없으면 일단 진행
+        setTimeout(() => {
+            clearInterval(checkAuth);
+            resolve();
+        }, 5000);
+    });
+}
 
 // 데이터 로드
 async function loadData() {
@@ -55,7 +83,24 @@ function renderContent() {
     staffTitle.textContent = `${currentStaff} 업무`;
     
     const content = document.getElementById('content');
-    const staffData = allData[currentStaff];
+    let staffData = allData[currentStaff];
+    
+    // 행정실장 업무는 kiyoung85만 볼 수 있음
+    if (currentStaff === '행정실장') {
+        const username = currentUserEmail.split('@')[0];
+        if (username !== 'kiyoung85') {
+            content.innerHTML = `
+                <div style="text-align: center; padding: 100px 20px; color: #666;">
+                    <h2>⚠️ 접근 권한이 없습니다</h2>
+                    <p style="margin-top: 20px;">이 페이지는 특정 사용자만 접근할 수 있습니다.</p>
+                    <button onclick="location.href='index.html'" style="margin-top: 30px; padding: 10px 30px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        홈으로 돌아가기
+                    </button>
+                </div>
+            `;
+            return;
+        }
+    }
     
     if (!staffData) {
         content.innerHTML = '<p>데이터를 찾을 수 없습니다.</p>';
