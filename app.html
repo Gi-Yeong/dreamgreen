@@ -156,11 +156,23 @@
             flex: 1;
             max-width: 400px;
             min-width: 200px;
+            position: relative;
+        }
+        
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            pointer-events: none;
+            z-index: 1;
         }
         
         .search-input {
             width: 100%;
-            padding: 12px 20px;
+            padding: 12px 20px 12px 45px;
             border: none;
             border-radius: 25px;
             font-size: 1em;
@@ -683,7 +695,7 @@
                 <div class="staff-title" id="staffTitle">업무 관리<span class="version-small">v1.1.0</span></div>
             </div>
             <div class="search-box">
-                <input type="text" class="search-input" id="searchInput" placeholder="🔍 업무 검색...">
+                <input type="text" class="search-input" id="searchInput" placeholder="업무 검색...">
             </div>
         </div>
     </div>
