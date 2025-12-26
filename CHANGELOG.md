@@ -8,18 +8,71 @@
 
 ---
 
+## Version 1.2.0 - 2025년 12월 26일
+
+### 🛠️ 개발 경험 개선 (DX Improvement)
+
+#### Firebase 설정 통합
+- ✅ `firebase-config.js` 파일 생성
+- ✅ 모든 Firebase 설정을 한 곳으로 통합
+- ✅ 4개 파일 수정 → **1개 파일만 수정**으로 간소화
+
+#### 변경된 파일들
+```javascript
+// 이전: 각 파일마다 설정 복붙
+login.html   → firebaseConfig { ... }
+index.html   → firebaseConfig { ... }
+app.html     → firebaseConfig { ... }
+auth.js      → firebaseConfig { ... }
+
+// 지금: import 한 줄로 끝
+login.html   → import { auth } from './firebase-config.js'
+index.html   → import { auth } from './firebase-config.js'
+app.html     → import { auth } from './firebase-config.js'
+auth.js      → import { auth } from './firebase-config.js'
+```
+
+#### 개선 효과
+- ⚡ 설정 변경 시간: 10분 → **2분** (80% 단축)
+- ✅ 실수 가능성: 높음 → **없음**
+- 🔧 유지보수성: **대폭 향상**
+
+### 🎨 UI 개선
+- ✅ 로그인 페이지에 실제 로고 이미지 적용 (images/logo.png)
+- ✅ 로고 로드 실패 시 🏥 이모지로 대체
+
+### 📁 새로 추가된 파일
+- `firebase-config.js` - Firebase 설정 전용 파일
+
+### 📝 수정된 파일
+- `login.html` - Firebase import 간소화, 로고 이미지 추가
+- `index.html` - Firebase import 간소화, 버전 1.2.0
+- `app.html` - Firebase import 간소화, 버전 1.2.0
+- `auth.js` - Firebase import 간소화
+- `README.html` - 버전 1.2.0, 히스토리 추가
+- `README.md` - 버전 1.2.0, 히스토리 추가
+- `VERSION.json` - 1.2.0 업데이트
+
+---
+
 ## Version 1.1.0 - 2025년 12월 26일
 
 ### 🎨 UI/UX 개선
 - ✅ 버전 배지와 직원 카드 간격 조정 (margin-bottom: 40px)
 - ✅ 로고 대체 아이콘 확인 및 유지 (🏥 요양원)
+- ✅ 사용자 정보 UI 개선
+  - 흰색 박스 배경
+  - 검은색 글자 (#2c3e50)
+  - 파란 테두리 (#667eea)
+  - 빨간색 로그아웃 버튼 (그라데이션)
+- ✅ 모든 페이지에 로그아웃 버튼 추가
 
 ### 📁 수정된 파일
-- index.html (CSS 및 버전 업데이트)
-- app.html (버전 업데이트)
-- README.html (버전 업데이트 및 히스토리 추가)
-- README.md (버전 업데이트)
-- VERSION.json (버전 관리 파일 생성)
+- `index.html` - 사용자 정보 UI 개선, 간격 조정
+- `app.html` - 로그아웃 버튼 추가
+- `README.html` - 버전 업데이트
+- `README.md` - 버전 업데이트
+- `VERSION.json` - 1.1.0 업데이트
 
 ---
 

@@ -35,12 +35,20 @@
             width: 100px;
             height: 100px;
             margin: 0 auto 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3em;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         h1 {
@@ -173,7 +181,9 @@
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">🏥</div>
+        <div class="logo">
+            <img src="https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/logo.png" alt="시흥꿈에그린요양원" onerror="this.parentElement.innerHTML='🏥'">
+        </div>
         <h1>시흥꿈에그린요양원</h1>
         <p class="subtitle">업무 관리 시스템</p>
         
