@@ -20,10 +20,11 @@
                 // 로그인 됨
                 console.log('로그인된 사용자:', user.email);
                 
+                const username = user.email.split('@')[0];
+                
                 // 사용자 정보 표시
                 const userInfo = document.getElementById('userInfo');
                 if (userInfo) {
-                    const username = user.email.split('@')[0];
                     userInfo.innerHTML = `
                         <div class="user-info-box">
                             <span class="user-name">👤 ${username}님</span>
@@ -32,6 +33,12 @@
                             </button>
                         </div>
                     `;
+                }
+                
+                // kiyoung85 계정일 때만 행정실장 카드 표시
+                const adminCard = document.getElementById('adminCard');
+                if (adminCard && username === 'kiyoung85') {
+                    adminCard.style.display = 'block';
                 }
             }
         });
@@ -326,6 +333,12 @@
                 <div class="staff-icon">👩‍⚕️</div>
                 <div class="staff-name">간호조무사</div>
                 <div class="staff-role">간호조무사</div>
+            </a>
+            
+            <a href="app.html?staff=행정실장" class="staff-card" id="adminCard" style="display: none;">
+                <div class="staff-icon">🏢</div>
+                <div class="staff-name">행정실장</div>
+                <div class="staff-role">행정실장</div>
             </a>
         </div>
         
