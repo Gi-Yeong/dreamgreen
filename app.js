@@ -116,33 +116,44 @@ function renderContent() {
     let staffData = allData[currentStaff];
     
         // 행정실장 업무는 kiyoung85@gmail.com만 볼 수 있음
-    if (currentStaff === '행정실장') {
-        console.log('행정실장 페이지 접근 - 현재 이메일:', currentUserEmail);
-        
-        // 이메일이 비어있으면 잠시 대기
-        if (!currentUserEmail) {
-            console.log('이메일 정보 없음 - 재시도 중...');
-            setTimeout(renderContent, 500); // 1000 → 500으로 단축
-            return;
-        }
-        
-        // 이메일 전체 비교로 변경
-        if (currentUserEmail !== 'kiyoung85@gmail.com') {
-            console.log('접근 거부: 이메일이 kiyoung85@gmail.com이 아님', currentUserEmail);
-            content.innerHTML = `
-                <div style="text-align: center; padding: 100px 20px; color: #666;">
-                    <h2>⚠️ 접근 권한이 없습니다</h2>
-                    <p style="margin-top: 20px;">이 페이지는 kiyoung85@gmail.com 사용자만 접근할 수 있습니다.</p>
-                    <p style="margin-top: 10px; font-size: 0.9em; color: #999;">(현재 이메일: ${currentUserEmail || '비로그인'})</p>
-                    <button onclick="location.href='index.html'" style="margin-top: 30px; padding: 10px 30px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                        홈으로 돌아가기
-                    </button>
-                </div>
-            `;
-            return;
-        }
-        console.log('접근 허용: kiyoung85@gmail.com 사용자');
+if (currentStaff === '행정실장') {
+    console.log('행정실장 페이지 접근 - 현재 이메일:', currentUserEmail);
+    
+    // 이메일이 비어있으면 접근 거부 (무한루프 방지)
+    if (!currentUserEmail) {
+        console.log('로그인 정보 없음 - 접근 거부');
+        content.innerHTML = `
+            <div style="text-align: center; padding: 100px 20px; color: #666;">
+                <h2>⚠️ 로그인이 필요합니다</h2>
+                <p style="margin-top: 20px;">이 페이지에 접근하려면 로그인이 필요합니다.</p>
+                <button onclick="location.href='login.html'" style="margin-top: 30px; padding: 10px 30px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    로그인하기
+                </button>
+                <button onclick="location.href='index.html'" style="margin-top: 10px; padding: 10px 30px; background: #999; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    홈으로 돌아가기
+                </button>
+            </div>
+        `;
+        return;
     }
+    
+    // 이메일 전체 비교로 변경
+    if (currentUserEmail !== 'kiyoung85@gmail.com') {
+        console.log('접근 거부: 이메일이 kiyoung85@gmail.com이 아님', currentUserEmail);
+        content.innerHTML = `
+            <div style="text-align: center; padding: 100px 20px; color: #666;">
+                <h2>⚠️ 접근 권한이 없습니다</h2>
+                <p style="margin-top: 20px;">이 페이지는 kiyoung85@gmail.com 사용자만 접근할 수 있습니다.</p>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #999;">(현재 이메일: ${currentUserEmail})</p>
+                <button onclick="location.href='index.html'" style="margin-top: 30px; padding: 10px 30px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    홈으로 돌아가기
+                </button>
+            </div>
+        `;
+        return;
+    }
+    console.log('접근 허용: kiyoung85@gmail.com 사용자');
+}
     
     if (!staffData) {
         content.innerHTML = '<p>데이터를 찾을 수 없습니다.</p>';
