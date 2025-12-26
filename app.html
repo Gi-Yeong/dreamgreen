@@ -94,20 +94,37 @@
             gap: 15px;
         }
         
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logout-btn {
+            background: rgba(231, 76, 60, 0.3);
+            margin-left: 20px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.5);
+        }
+        
         .logo-small {
-            width: 50px;
-            height: 50px;
+            width: 120px;
+            height: 60px;
             background: white;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            padding: 8px;
         }
         
         .logo-small img {
             max-width: 100%;
             max-height: 100%;
+            object-fit: contain;
         }
         
         .home-btn {
@@ -690,9 +707,11 @@
                 <div class="logo-small">
                     <img src="https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/logo.png" alt="Logo" onerror="this.parentElement.innerHTML='<div style=\'font-size:1.5em\'>🏥</div>'">
                 </div>
-                <button class="home-btn" onclick="location.href='index.html'">🏠 홈으로</button>
-                <button class="home-btn" onclick="handleLogout()" style="background: rgba(231, 76, 60, 0.2);">🚪 로그아웃</button>
                 <div class="staff-title" id="staffTitle">업무 관리<span class="version-small">v1.1.0</span></div>
+            </div>
+            <div class="header-right">
+                <button class="home-btn" onclick="location.href='index.html'">🏠 홈으로</button>
+                <button class="home-btn logout-btn" onclick="handleLogout()">🚪 로그아웃</button>
             </div>
             <div class="search-box">
                 <input type="text" class="search-input" id="searchInput" placeholder="업무 검색...">
