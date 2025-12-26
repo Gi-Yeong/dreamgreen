@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 시흥꿈에그린요양원</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            font-size: 0.9em;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .forgot-password {
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 40px 30px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">🏥</div>
+        <h1>시흥꿈에그린요양원</h1>
+        <p class="subtitle">업무 관리 시스템</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">📧 이메일</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    placeholder="example@dreamgreen.com"
+                    required
+                    autocomplete="email"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password">🔒 비밀번호</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="비밀번호를 입력하세요"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+            
+            <button type="submit" class="login-btn" id="loginBtn">
+                로그인
+            </button>
+        </form>
+        
+        <div class="error-message" id="errorMessage"></div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #666;">로그인 중...</p>
+        </div>
+        
+        <!-- 나중에 활성화
+        <a href="#" class="forgot-password">비밀번호를 잊으셨나요?</a>
+        -->
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // ⚠️ 여기에 Firebase 설정을 붙여넣으세요!
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "firebase/app";
+        import { getAnalytics } from "firebase/analytics";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+        apiKey: "AIzaSyAtZ8rS9UMwU9sww6hSwwk1ISxyAK5vZwI",
+        authDomain: "dreamgreen-f720d.firebaseapp.com",
+        projectId: "dreamgreen-f720d",
+        storageBucket: "dreamgreen-f720d.firebasestorage.app",
+        messagingSenderId: "313272641024",
+        appId: "1:313272641024:web:d742a19bc5c3ced58c5ae5",
+        measurementId: "G-2BS154H6F5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        // 이미 로그인되어 있으면 메인 페이지로
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // 로그인 폼 처리
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const loading = document.getElementById('loading');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // UI 업데이트
+            loginBtn.disabled = true;
+            loginBtn.textContent = '로그인 중...';
+            loading.classList.add('show');
+            errorMessage.classList.remove('show');
+            
+            try {
+                // Firebase 로그인
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                console.log('로그인 성공:', user.email);
+                
+                // 메인 페이지로 이동
+                window.location.href = 'index.html';
+                
+            } catch (error) {
+                console.error('로그인 실패:', error);
+                
+                // 에러 메시지 표시
+                let message = '로그인에 실패했습니다.';
+                
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        message = '잘못된 이메일 형식입니다.';
+                        break;
+                    case 'auth/user-disabled':
+                        message = '비활성화된 계정입니다. 관리자에게 문의하세요.';
+                        break;
+                    case 'auth/user-not-found':
+                        message = '등록되지 않은 이메일입니다.';
+                        break;
+                    case 'auth/wrong-password':
+                        message = '비밀번호가 일치하지 않습니다.';
+                        break;
+                    case 'auth/invalid-credential':
+                        message = '이메일 또는 비밀번호가 올바르지 않습니다.';
+                        break;
+                    case 'auth/too-many-requests':
+                        message = '너무 많은 시도가 있었습니다. 잠시 후 다시 시도해주세요.';
+                        break;
+                }
+                
+                errorMessage.textContent = message;
+                errorMessage.classList.add('show');
+                
+                // UI 복구
+                loginBtn.disabled = false;
+                loginBtn.textContent = '로그인';
+                loading.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
