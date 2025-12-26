@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Firebase 인증 대기
 async function waitForAuth() {
     return new Promise((resolve) => {
+        let timeoutId; // 타임아웃 ID 저장
+        
         // Firebase가 로드되고 auth 객체가 준비될 때까지 대기
         const checkAuth = setInterval(() => {
             if (window.getCurrentUser) {
@@ -50,17 +52,18 @@ async function waitForAuth() {
                     currentUserEmail = user.email;
                     console.log('로그인한 사용자:', currentUserEmail);
                     clearInterval(checkAuth);
+                    clearTimeout(timeoutId); // 타임아웃 취소!
                     resolve();
                 }
             }
-        }, 50); // 100ms → 50ms로 단축
+        }, 50);
         
         // 2초 후에도 정보가 없으면 일단 진행
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
             console.log('인증 타임아웃 - 현재 이메일:', currentUserEmail);
             clearInterval(checkAuth);
             resolve();
-        }, 2000); // 10000 → 2000으로 단축
+        }, 2000);
     });
 }
 
