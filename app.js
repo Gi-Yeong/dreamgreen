@@ -1,0 +1,567 @@
+// 업무 관리 시스템 JavaScript
+
+const GITHUB_BASE_URL = "https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images";
+const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'PNG', 'JPG', 'JPEG'];
+
+let allData = {};
+let colors = {};
+let currentStaff = '';
+let currentImages = [];
+let currentImageIndex = 0;
+let currentZoom = 1;
+let validImageUrls = [];
+let currentIndicatorNum = null;
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', async function() {
+    // URL 파라미터에서 직원 이름 가져오기
+    const params = new URLSearchParams(window.location.search);
+    currentStaff = params.get('staff') || '민희진';
+    
+    // 데이터 로드
+    await loadData();
+    
+    // UI 렌더링
+    renderContent();
+    
+    // 검색 이벤트 리스너
+    document.getElementById('searchInput').addEventListener('input', handleSearch);
+});
+
+// 데이터 로드
+async function loadData() {
+    try {
+        const dataResponse = await fetch('data.json');
+        allData = await dataResponse.json();
+        
+        const colorsResponse = await fetch('colors.json');
+        colors = await colorsResponse.json();
+    } catch (error) {
+        console.error('데이터 로드 실패:', error);
+        alert('데이터를 불러올 수 없습니다.');
+    }
+}
+
+// 콘텐츠 렌더링
+function renderContent() {
+    const staffTitle = document.getElementById('staffTitle');
+    staffTitle.textContent = `${currentStaff} 업무`;
+    
+    const content = document.getElementById('content');
+    const staffData = allData[currentStaff];
+    
+    if (!staffData) {
+        content.innerHTML = '<p>데이터를 찾을 수 없습니다.</p>';
+        return;
+    }
+    
+    // 범례 생성
+    let html = `
+        <div class="legend">
+            <h2>📋 주기별 색상 범례 (클릭하여 해당 주기 업무 보기)</h2>
+            <div class="legend-items">
+    `;
+    
+    const legendItems = [
+        ['매일', '연한 핑크'],
+        ['주 1회', '연한 파랑'],
+        ['주 2회', '연한 오렌지'],
+        ['월 1회', '연한 초록'],
+        ['분기별', '연한 보라'],
+        ['반기별', '연한 자주'],
+        ['연 1회', '연한 노랑'],
+        ['수시', '연한 회색']
+    ];
+    
+    legendItems.forEach(([cycle, desc]) => {
+        const color = colors[cycle] || '#FFFFFF';
+        html += `
+            <div class="legend-item" onclick="showCycleTasks('${cycle}')">
+                <div class="legend-color" style="background-color: ${color};">${cycle}</div>
+                <span>${desc}</span>
+            </div>
+        `;
+    });
+    
+    html += `
+            </div>
+        </div>
+    `;
+    
+    // 섹션 생성
+    let taskId = 0;
+    staffData.forEach(section => {
+        if (section.title.includes('참고:')) return;
+        
+        const indicatorNum = extractIndicatorNumber(section.title);
+        const clickable = indicatorNum ? 'clickable' : '';
+        const onclick = indicatorNum ? `onclick="openImageModalWithAutoDetect('${indicatorNum}')"` : '';
+        
+        html += `
+            <div class="section">
+                <div class="section-title ${clickable}" ${onclick}>${section.title}</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>업무 내용</th>
+                            <th>비고</th>
+                            <th>주기</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        section.data.forEach(item => {
+            const color = colors[item.cycle] || '#FFFFFF';
+            html += `
+                <tr id="task-${taskId}" data-cycle="${item.cycle}" data-base-cycle="${item.baseCycle}" data-section="${section.title}">
+                    <td class="task-cell">${item.task}</td>
+                    <td class="note-cell">${item.note}</td>
+                    <td class="cycle-cell" style="background-color: ${color};">${item.cycle}</td>
+                </tr>
+            `;
+            taskId++;
+        });
+        
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+    });
+    
+    content.innerHTML = html;
+}
+
+// 평가지표 번호 추출
+function extractIndicatorNumber(title) {
+    const match = title.match(/평가지표\s*(\d+)/);
+    if (match) {
+        return match[1].padStart(2, '0');
+    }
+    return null;
+}
+
+// 검색 처리
+function handleSearch(e) {
+    const query = e.target.value.toLowerCase().trim();
+    const searchResults = document.getElementById('searchResults');
+    const searchResultsContent = document.getElementById('searchResultsContent');
+    
+    if (!query) {
+        searchResults.style.display = 'none';
+        return;
+    }
+    
+    // 모든 직원의 데이터에서 검색
+    const results = [];
+    
+    Object.keys(allData).forEach(staffName => {
+        allData[staffName].forEach(section => {
+            section.data.forEach((item, index) => {
+                if (item.task.toLowerCase().includes(query) || 
+                    item.note.toLowerCase().includes(query)) {
+                    results.push({
+                        staff: staffName,
+                        section: section.title,
+                        task: item.task,
+                        note: item.note,
+                        cycle: item.cycle
+                    });
+                }
+            });
+        });
+    });
+    
+    if (results.length === 0) {
+        searchResultsContent.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
+    } else {
+        let html = '';
+        results.forEach(result => {
+            html += `
+                <div class="search-result-item" onclick="navigateToStaff('${result.staff}')">
+                    <div class="search-result-task">${result.task}</div>
+                    <div class="search-result-meta">
+                        👤 ${result.staff} | 📍 ${result.section} | 📅 ${result.cycle}
+                    </div>
+                </div>
+            `;
+        });
+        searchResultsContent.innerHTML = html;
+    }
+    
+    searchResults.style.display = 'block';
+}
+
+// 직원 페이지로 이동
+function navigateToStaff(staffName) {
+    if (currentStaff !== staffName) {
+        location.href = `app.html?staff=${staffName}`;
+    } else {
+        document.getElementById('searchResults').style.display = 'none';
+        document.getElementById('searchInput').value = '';
+    }
+}
+
+// 이미지 URL 생성
+function generateImageUrls(indicatorNum, imageNum) {
+    const folder = `metrics${indicatorNum}`;
+    const baseFileName = `평가지표 ${indicatorNum}-${imageNum}`;
+    
+    return IMAGE_EXTENSIONS.map(ext => {
+        const fileName = encodeURIComponent(`${baseFileName}.${ext}`);
+        return `${GITHUB_BASE_URL}/${folder}/${fileName}`;
+    });
+}
+
+// 이미지 존재 확인
+async function checkImageExists(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+    } catch {
+        return false;
+    }
+}
+
+// 존재하는 이미지 찾기
+async function findExistingImage(indicatorNum, imageNum) {
+    const urls = generateImageUrls(indicatorNum, imageNum);
+    
+    for (const url of urls) {
+        const exists = await checkImageExists(url);
+        if (exists) {
+            return url;
+        }
+    }
+    
+    return null;
+}
+
+// 모든 이미지 자동 감지
+async function detectAllImages(indicatorNum) {
+    const detectedUrls = [];
+    const maxAttempts = 20;
+    let consecutiveFailures = 0;
+    
+    for (let i = 1; i <= maxAttempts; i++) {
+        const url = await findExistingImage(indicatorNum, i);
+        
+        if (url) {
+            detectedUrls.push(url);
+            consecutiveFailures = 0;
+        } else {
+            consecutiveFailures++;
+            if (consecutiveFailures >= 2) {
+                break;
+            }
+        }
+    }
+    
+    return detectedUrls;
+}
+
+// 이미지 모달 열기
+async function openImageModalWithAutoDetect(indicatorNum) {
+    currentIndicatorNum = indicatorNum;
+    const modal = document.getElementById('imageModal');
+    const loading = document.getElementById('loading');
+    const imageError = document.getElementById('imageError');
+    const modalImg = document.getElementById('modalImage');
+    
+    modal.style.display = "block";
+    loading.style.display = "block";
+    loading.textContent = "이미지 검색 중... (jpg, jpeg, png 지원)";
+    modalImg.style.display = "none";
+    imageError.style.display = "none";
+    
+    currentImages = await detectAllImages(indicatorNum);
+    validImageUrls = [...currentImages];
+    
+    if (currentImages.length === 0) {
+        loading.style.display = "none";
+        imageError.textContent = "평가지표 이미지를 찾을 수 없습니다.\n(지원 확장자: jpg, jpeg, png)";
+        imageError.style.display = "block";
+        return;
+    }
+    
+    currentImageIndex = 0;
+    currentZoom = 1;
+    loadImage(0);
+}
+
+function showDownloadStatus(message, type, showProgress = false) {
+    const status = document.getElementById('downloadStatus');
+    const statusText = document.getElementById('downloadStatusText');
+    const progressBar = document.getElementById('progressBar');
+    
+    statusText.textContent = message;
+    status.className = 'download-status ' + type;
+    progressBar.style.display = showProgress ? 'block' : 'none';
+    status.style.display = 'block';
+    
+    if (!showProgress) {
+        setTimeout(() => {
+            status.style.display = 'none';
+        }, 3000);
+    }
+}
+
+function updateProgress(current, total) {
+    const progressFill = document.getElementById('progressFill');
+    const percent = (current / total) * 100;
+    progressFill.style.width = percent + '%';
+    
+    const statusText = document.getElementById('downloadStatusText');
+    statusText.textContent = `다운로드 중... (${current}/${total})`;
+}
+
+async function loadImage(index) {
+    const modalImg = document.getElementById('modalImage');
+    const loading = document.getElementById('loading');
+    const imageError = document.getElementById('imageError');
+    
+    loading.style.display = "block";
+    loading.textContent = "이미지 로딩 중...";
+    modalImg.style.display = "none";
+    imageError.style.display = "none";
+    
+    modalImg.src = currentImages[index];
+    currentZoom = 1;
+    modalImg.style.transform = 'scale(1)';
+    
+    modalImg.onload = function() {
+        loading.style.display = "none";
+        modalImg.style.display = "block";
+        updateCounter();
+        updateDownloadAllButton();
+    };
+    
+    modalImg.onerror = function() {
+        loading.style.display = "none";
+        imageError.style.display = "block";
+    };
+}
+
+function changeImage(direction) {
+    currentImageIndex += direction;
+    
+    if (currentImageIndex < 0) {
+        currentImageIndex = currentImages.length - 1;
+    } else if (currentImageIndex >= currentImages.length) {
+        currentImageIndex = 0;
+    }
+    
+    loadImage(currentImageIndex);
+}
+
+function updateCounter() {
+    document.getElementById('imageCounter').textContent = 
+        `${currentImageIndex + 1} / ${currentImages.length}`;
+}
+
+function updateDownloadAllButton() {
+    const btn = document.getElementById('downloadAllBtn');
+    if (validImageUrls.length > 1) {
+        btn.style.display = 'block';
+    } else {
+        btn.style.display = 'none';
+    }
+}
+
+function zoomIn() {
+    currentZoom += 0.2;
+    if (currentZoom > 3) currentZoom = 3;
+    document.getElementById('modalImage').style.transform = `scale(${currentZoom})`;
+}
+
+function zoomOut() {
+    currentZoom -= 0.2;
+    if (currentZoom < 0.5) currentZoom = 0.5;
+    document.getElementById('modalImage').style.transform = `scale(${currentZoom})`;
+}
+
+function resetZoom() {
+    currentZoom = 1;
+    document.getElementById('modalImage').style.transform = 'scale(1)';
+}
+
+async function downloadCurrentImage() {
+    const downloadBtn = document.getElementById('downloadBtn');
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = '다운로드 중...';
+    
+    try {
+        const imageUrl = currentImages[currentImageIndex];
+        await downloadSingleImage(imageUrl);
+        showDownloadStatus('✅ 이미지 다운로드 완료!', 'success');
+    } catch (error) {
+        console.error('다운로드 오류:', error);
+        showDownloadStatus('❌ 다운로드 실패', 'error');
+        window.open(currentImages[currentImageIndex], '_blank');
+    } finally {
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = '⬇ 현재 이미지';
+    }
+}
+
+async function downloadSingleImage(imageUrl) {
+    const response = await fetch(imageUrl);
+    if (!response.ok) throw new Error('Failed to fetch');
+    
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    
+    const urlParts = imageUrl.split('/');
+    const encodedFilename = urlParts[urlParts.length - 1];
+    const filename = decodeURIComponent(encodedFilename);
+    
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(blobUrl);
+}
+
+async function downloadAllImages() {
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
+    downloadAllBtn.disabled = true;
+    downloadAllBtn.textContent = '압축 중...';
+    
+    try {
+        showDownloadStatus('ZIP 파일 생성 중...', 'progress', true);
+        
+        const zip = new JSZip();
+        const total = validImageUrls.length;
+        
+        for (let i = 0; i < validImageUrls.length; i++) {
+            const imageUrl = validImageUrls[i];
+            updateProgress(i + 1, total);
+            
+            try {
+                const response = await fetch(imageUrl);
+                if (!response.ok) continue;
+                
+                const blob = await response.blob();
+                const urlParts = imageUrl.split('/');
+                const encodedFilename = urlParts[urlParts.length - 1];
+                const filename = decodeURIComponent(encodedFilename);
+                
+                zip.file(filename, blob);
+            } catch (error) {
+                console.error(`이미지 ${i + 1} 다운로드 실패:`, error);
+            }
+        }
+        
+        showDownloadStatus('ZIP 파일 생성 중...', 'progress', false);
+        
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const zipUrl = window.URL.createObjectURL(zipBlob);
+        
+        const zipFilename = `평가지표_${currentIndicatorNum}_전체.zip`;
+        
+        const link = document.createElement('a');
+        link.href = zipUrl;
+        link.download = zipFilename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(zipUrl);
+        
+        showDownloadStatus(`✅ ${validImageUrls.length}개 이미지 다운로드 완료!`, 'success');
+    } catch (error) {
+        console.error('전체 다운로드 오류:', error);
+        showDownloadStatus('❌ 다운로드 실패', 'error');
+    } finally {
+        downloadAllBtn.disabled = false;
+        downloadAllBtn.textContent = '📦 전체 다운로드';
+    }
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').style.display = "none";
+}
+
+function scrollToTask(taskId) {
+    closeCycleModal();
+    const taskRow = document.getElementById(taskId);
+    if (taskRow) {
+        taskRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        taskRow.classList.add('highlighted');
+        setTimeout(() => taskRow.classList.remove('highlighted'), 2000);
+    }
+}
+
+function showCycleTasks(cycle) {
+    const modal = document.getElementById('cycleModal');
+    const title = document.getElementById('cycleModalTitle');
+    const badge = document.getElementById('cycleBadge');
+    const taskList = document.getElementById('cycleTaskList');
+    
+    title.textContent = '업무 목록';
+    badge.textContent = cycle;
+    badge.style.backgroundColor = colors[cycle] || '#F0F0F0';
+    
+    const tasks = [];
+    document.querySelectorAll('tr[data-base-cycle]').forEach(row => {
+        const baseCycle = row.getAttribute('data-base-cycle');
+        const fullCycle = row.getAttribute('data-cycle');
+        
+        if (baseCycle === cycle || fullCycle === cycle) {
+            const task = row.querySelector('.task-cell').innerHTML;
+            const note = row.querySelector('.note-cell').textContent;
+            const section = row.getAttribute('data-section');
+            const taskId = row.id;
+            tasks.push({ task, note, section, taskId });
+        }
+    });
+    
+    if (tasks.length === 0) {
+        taskList.innerHTML = '<p style="text-align: center; color: #999;">해당 주기의 업무가 없습니다.</p>';
+    } else {
+        taskList.innerHTML = tasks.map(t => `
+            <div class="cycle-task-item" onclick="scrollToTask('${t.taskId}')">
+                <div class="cycle-task-title">${t.task}</div>
+                <div class="cycle-task-note">${t.note}</div>
+                <div class="cycle-task-section">📍 ${t.section}</div>
+            </div>
+        `).join('');
+    }
+    
+    modal.style.display = "block";
+}
+
+function closeCycleModal() {
+    document.getElementById('cycleModal').style.display = "none";
+}
+
+// 키보드 이벤트
+document.addEventListener('keydown', function(event) {
+    const imageModal = document.getElementById('imageModal');
+    
+    if (imageModal.style.display === 'block') {
+        if (event.key === 'Escape') {
+            closeImageModal();
+        } else if (event.key === 'ArrowLeft') {
+            changeImage(-1);
+        } else if (event.key === 'ArrowRight') {
+            changeImage(1);
+        } else if (event.key === '+' || event.key === '=') {
+            zoomIn();
+        } else if (event.key === '-' || event.key === '_') {
+            zoomOut();
+        }
+    } else if (event.key === 'Escape') {
+        closeCycleModal();
+    }
+});
+
+// 클릭 이벤트
+window.onclick = function(event) {
+    const imageModal = document.getElementById('imageModal');
+    const cycleModal = document.getElementById('cycleModal');
+    if (event.target === imageModal) closeImageModal();
+    if (event.target === cycleModal) closeCycleModal();
+}
