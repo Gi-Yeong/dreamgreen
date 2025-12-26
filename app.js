@@ -51,6 +51,8 @@ async function waitForAuth() {
                 if (user) {
                     currentUserEmail = user.email;
                     console.log('로그인한 사용자:', currentUserEmail);
+                    console.log('checkAuth:', checkAuth);
+                    console.log('timeoutId:', timeoutId);
                     clearInterval(checkAuth);
                     clearTimeout(timeoutId); // 타임아웃 취소!
                     resolve();
