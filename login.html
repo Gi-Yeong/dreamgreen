@@ -219,27 +219,12 @@
 
     <!-- Firebase SDK -->
     <script type="module">
-        // ⚠️ 여기에 Firebase 설정을 붙여넣으세요!
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
-        // Firebase 설정 (Firebase Console에서 복사한 정보를 여기에 붙여넣으세요)
-        const firebaseConfig = {
-            apiKey: "AIzaSyAtZ8rS9UMwU9sww6hSwwk1ISxyAK5vZwI",
-            authDomain: "dreamgreen-f720d.firebaseapp.com",
-            projectId: "dreamgreen-f720d",
-            storageBucket: "dreamgreen-f720d.firebasestorage.app",
-            messagingSenderId: "313272641024",
-            appId: "1:313272641024:web:d742a19bc5c3ced58c5ae5",
-            measurementId: "G-2BS154H6F5"
-        };
-
-        // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        // Firebase 설정 가져오기 (한 곳에서만 관리!)
+        import { auth } from './firebase-config.js';
+        import { signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         // 이미 로그인되어 있으면 메인 페이지로
-        auth.onAuthStateChanged((user) => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 window.location.href = 'index.html';
             }

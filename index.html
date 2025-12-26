@@ -7,22 +7,9 @@
     
     <!-- Firebase 인증 체크 (가장 먼저!) -->
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
-        // ⚠️ Firebase 설정 (login.html과 동일하게!)
-        const firebaseConfig = {
-            apiKey: "AIzaSyAtZ8rS9UMwU9sww6hSwwk1ISxyAK5vZwI",
-            authDomain: "dreamgreen-f720d.firebaseapp.com",
-            projectId: "dreamgreen-f720d",
-            storageBucket: "dreamgreen-f720d.firebasestorage.app",
-            messagingSenderId: "313272641024",
-            appId: "1:313272641024:web:d742a19bc5c3ced58c5ae5",
-            measurementId: "G-2BS154H6F5"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        // Firebase 설정 가져오기 (한 곳에서만 관리!)
+        import { auth } from './firebase-config.js';
+        import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         // 로그인 확인
         onAuthStateChanged(auth, (user) => {
