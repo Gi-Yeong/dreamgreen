@@ -1273,6 +1273,8 @@
     
     <script>
         const GITHUB_BASE_URL = "https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images";
+        const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'PNG', 'JPG', 'JPEG'];
+        
         let currentImages = [];
         let currentImageIndex = 0;
         let currentZoom = 1;
@@ -1290,11 +1292,15 @@
             '수시': '#F0F0F0'
         };
         
-        // 이미지 URL 생성 함수
-        function generateImageUrl(indicatorNum, imageNum) {
+        // 여러 확장자로 이미지 URL 생성
+        function generateImageUrls(indicatorNum, imageNum) {
             const folder = `metrics${indicatorNum}`;
-            const fileName = encodeURIComponent(`평가지표 ${indicatorNum}-${imageNum}.jpg`);
-            return `${GITHUB_BASE_URL}/${folder}/${fileName}`;
+            const baseFileName = `평가지표 ${indicatorNum}-${imageNum}`;
+            
+            return IMAGE_EXTENSIONS.map(ext => {
+                const fileName = encodeURIComponent(`${baseFileName}.${ext}`);
+                return `${GITHUB_BASE_URL}/${folder}/${fileName}`;
+            });
         }
         
         // 이미지 존재 여부 확인
@@ -1307,33 +1313,44 @@
             }
         }
         
-        // 모든 이미지 자동 감지
+        // 여러 확장자 중 존재하는 이미지 찾기
+        async function findExistingImage(indicatorNum, imageNum) {
+            const urls = generateImageUrls(indicatorNum, imageNum);
+            
+            for (const url of urls) {
+                const exists = await checkImageExists(url);
+                if (exists) {
+                    return url;
+                }
+            }
+            
+            return null;
+        }
+        
+        // 모든 이미지 자동 감지 (여러 확장자 지원)
         async function detectAllImages(indicatorNum) {
             const detectedUrls = [];
-            const maxAttempts = 20; // 최대 20개까지 시도
+            const maxAttempts = 20;
+            let consecutiveFailures = 0;
             
             for (let i = 1; i <= maxAttempts; i++) {
-                const url = generateImageUrl(indicatorNum, i);
-                const exists = await checkImageExists(url);
+                const url = await findExistingImage(indicatorNum, i);
                 
-                if (exists) {
+                if (url) {
                     detectedUrls.push(url);
+                    consecutiveFailures = 0;
                 } else {
-                    // 연속으로 2개 실패하면 종료
-                    if (i > 1 && detectedUrls.length > 0) {
-                        const prevUrl = generateImageUrl(indicatorNum, i - 1);
-                        const prevExists = await checkImageExists(prevUrl);
-                        if (!prevExists) break;
+                    consecutiveFailures++;
+                    // 연속으로 2번 실패하면 종료
+                    if (consecutiveFailures >= 2) {
+                        break;
                     }
-                    // 첫 번째 이미지가 없으면 종료
-                    if (i === 1) break;
                 }
             }
             
             return detectedUrls;
         }
         
-        // 이미지 모달 열기 (자동 감지)
         async function openImageModalWithAutoDetect(indicatorNum) {
             currentIndicatorNum = indicatorNum;
             const modal = document.getElementById('imageModal');
@@ -1343,17 +1360,16 @@
             
             modal.style.display = "block";
             loading.style.display = "block";
-            loading.textContent = "이미지 검색 중...";
+            loading.textContent = "이미지 검색 중... (jpg, jpeg, png 지원)";
             modalImg.style.display = "none";
             imageError.style.display = "none";
             
-            // 이미지 자동 감지
             currentImages = await detectAllImages(indicatorNum);
             validImageUrls = [...currentImages];
             
             if (currentImages.length === 0) {
                 loading.style.display = "none";
-                imageError.textContent = "평가지표 이미지를 찾을 수 없습니다.";
+                imageError.textContent = "평가지표 이미지를 찾을 수 없습니다.\n(지원 확장자: jpg, jpeg, png)";
                 imageError.style.display = "block";
                 return;
             }
