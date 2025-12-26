@@ -31,8 +31,28 @@
                 window.location.href = 'login.html';
             } else {
                 console.log('로그인된 사용자:', user.email);
+                
+                // 사용자 정보 표시
+                updateUserInfo(user);
             }
         });
+        
+        // 사용자 정보 UI 업데이트
+        function updateUserInfo(user) {
+            const username = user.email.split('@')[0];
+            const staffTitle = document.getElementById('staffTitle');
+            
+            if (staffTitle) {
+                // 기존 제목 유지하고 사용자 정보 추가
+                const currentTitle = staffTitle.innerHTML;
+                staffTitle.innerHTML = `
+                    ${currentTitle}
+                    <div class="user-info-inline">
+                        <span class="user-name-small">👤 ${username}님</span>
+                    </div>
+                `;
+            }
+        }
 
         // 로그아웃 함수
         window.handleLogout = async function() {
@@ -127,6 +147,22 @@
             font-size: 0.7em;
             opacity: 0.8;
             margin-left: 10px;
+        }
+        
+        .user-info-inline {
+            display: inline-block;
+            margin-left: 20px;
+            background: white;
+            color: #2c3e50;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.6em;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+        
+        .user-name-small {
+            color: #667eea;
         }
         
         .search-box {

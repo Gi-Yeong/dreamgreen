@@ -38,19 +38,9 @@
                 if (userInfo) {
                     const username = user.email.split('@')[0];
                     userInfo.innerHTML = `
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span style="color: white; font-weight: bold;">👤 ${username}님</span>
-                            <button onclick="handleLogout()" style="
-                                background: rgba(255,255,255,0.2);
-                                color: white;
-                                border: none;
-                                padding: 8px 16px;
-                                border-radius: 6px;
-                                cursor: pointer;
-                                font-size: 0.9em;
-                                transition: 0.3s;
-                            " onmouseover="this.style.background='rgba(255,255,255,0.3)'" 
-                               onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                        <div class="user-info-box">
+                            <span class="user-name">👤 ${username}님</span>
+                            <button class="logout-btn" onclick="handleLogout()">
                                 로그아웃
                             </button>
                         </div>
@@ -251,17 +241,72 @@
                 padding: 40px 20px;
             }
         }
+        
+        /* 사용자 정보 스타일 */
+        .user-info-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 12px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            border: 2px solid #667eea;
+        }
+        
+        .user-name {
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 1em;
+        }
+        
+        .logout-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+        }
+        
+        .logout-btn:active {
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .user-info-box {
+                top: 10px;
+                right: 10px;
+                padding: 10px 15px;
+            }
+            
+            .user-name {
+                font-size: 0.9em;
+            }
+            
+            .logout-btn {
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- 사용자 정보 표시 -->
-        <div id="userInfo" style="
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        "></div>
+        <div id="userInfo"></div>
         
         <div class="logo">
             <img src="https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/logo.png" alt="시흥꿈에그린요양원" onerror="this.parentElement.innerHTML='<div style=\'font-size:3em\'>🏥</div>'">
