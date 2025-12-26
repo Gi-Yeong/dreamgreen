@@ -16,6 +16,7 @@
             background-color: #f5f5f5;
             padding: 20px;
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
         
         .container {
@@ -62,6 +63,13 @@
             padding: 8px 12px;
             border-radius: 6px;
             border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .legend-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
         
         .legend-color {
@@ -89,20 +97,19 @@
             margin-bottom: 15px;
             font-size: 1.1em;
             font-weight: bold;
-            cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
         
-        .section-title:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
         .section-title.clickable {
             cursor: pointer;
+        }
+        
+        .section-title.clickable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .section-title.clickable::after {
@@ -133,8 +140,22 @@
             vertical-align: top;
         }
         
+        tr {
+            transition: all 0.3s ease;
+        }
+        
         tr:hover {
             background-color: #f8f9fa;
+        }
+        
+        tr.highlighted {
+            background-color: #fff3cd !important;
+            animation: highlight 1.5s ease;
+        }
+        
+        @keyframes highlight {
+            0% { background-color: #ffc107; }
+            100% { background-color: #fff3cd; }
         }
         
         .task-cell {
@@ -153,7 +174,7 @@
             border-radius: 4px;
         }
         
-        /* 모달 스타일 */
+        /* 이미지 모달 스타일 */
         .modal {
             display: none;
             position: fixed;
@@ -163,7 +184,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0,0,0,0.95);
             animation: fadeIn 0.3s;
         }
         
@@ -172,21 +193,26 @@
             to { opacity: 1; }
         }
         
+        .modal-content-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
         .modal-content {
-            margin: auto;
-            display: block;
             max-width: 90%;
             max-height: 90%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            object-fit: contain;
             animation: zoomIn 0.3s;
+            transition: transform 0.3s ease;
         }
         
         @keyframes zoomIn {
-            from { transform: translate(-50%, -50%) scale(0.7); }
-            to { transform: translate(-50%, -50%) scale(1); }
+            from { transform: scale(0.7); }
+            to { transform: scale(1); }
         }
         
         .close {
@@ -196,14 +222,82 @@
             color: #f1f1f1;
             font-size: 50px;
             font-weight: bold;
-            transition: 0.3s;
             cursor: pointer;
+            z-index: 1001;
+            transition: 0.3s;
+        }
+        
+        .close:hover {
+            color: #ff5555;
+        }
+        
+        /* 이미지 네비게이션 버튼 */
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255,255,255,0.3);
+            color: white;
+            font-size: 40px;
+            padding: 20px 25px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: 0.3s;
             z-index: 1001;
         }
         
-        .close:hover,
-        .close:focus {
-            color: #bbb;
+        .nav-button:hover {
+            background-color: rgba(255,255,255,0.5);
+        }
+        
+        .prev {
+            left: 30px;
+        }
+        
+        .next {
+            right: 30px;
+        }
+        
+        /* 이미지 컨트롤 바 */
+        .image-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 15px 25px;
+            border-radius: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 1001;
+        }
+        
+        .control-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .control-button:hover {
+            background: rgba(255,255,255,0.4);
+        }
+        
+        .image-counter {
+            color: white;
+            font-size: 16px;
+        }
+        
+        .loading {
+            color: white;
+            text-align: center;
+            font-size: 1.5em;
         }
         
         .image-error {
@@ -213,19 +307,116 @@
             font-size: 1.2em;
         }
         
+        /* 주기별 업무 모달 */
+        .cycle-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+        
+        .cycle-modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideDown 0.3s;
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .cycle-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .cycle-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+            color: #2c3e50;
+        }
+        
+        .cycle-badge {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .cycle-close {
+            color: #aaa;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .cycle-close:hover {
+            color: #000;
+        }
+        
+        .cycle-task-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #3498db;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cycle-task-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .cycle-task-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .cycle-task-note {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .cycle-task-section {
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .container {
-                box-shadow: none;
-                padding: 20px;
-            }
-            
-            .section {
-                page-break-inside: avoid;
+            .legend-item {
+                cursor: default;
             }
             
             .section-title.clickable::after {
@@ -239,38 +430,38 @@
         <h1>간호조무사 업무</h1>
         
         <div class="legend">
-            <h2>📋 주기별 색상 범례</h2>
+            <h2>📋 주기별 색상 범례 (클릭하여 해당 주기 업무 보기)</h2>
             <div class="legend-items">
 
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('매일')">
                     <div class="legend-color" style="background-color: #FFE5E5;">매일</div>
                     <span>연한 핑크</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('주 1회')">
                     <div class="legend-color" style="background-color: #E5F3FF;">주 1회</div>
                     <span>연한 파랑</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('주 2회')">
                     <div class="legend-color" style="background-color: #FFF5E5;">주 2회</div>
                     <span>연한 오렌지</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('월 1회')">
                     <div class="legend-color" style="background-color: #E5FFE5;">월 1회</div>
                     <span>연한 초록</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('분기별')">
                     <div class="legend-color" style="background-color: #F5E5FF;">분기별</div>
                     <span>연한 보라</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('반기별')">
                     <div class="legend-color" style="background-color: #FFE5F5;">반기별</div>
                     <span>연한 자주</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('연 1회')">
                     <div class="legend-color" style="background-color: #FFFFE5;">연 1회</div>
                     <span>연한 노랑</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('수시')">
                     <div class="legend-color" style="background-color: #F0F0F0;">수시</div>
                     <span>연한 회색</span>
                 </div>
@@ -278,7 +469,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 04.jpg')">평가지표 4: 직원교육</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004-3.jpg'])">평가지표 4: 직원교육</div>
             <table>
                 <thead>
                     <tr>
@@ -289,27 +480,27 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-0" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">법정교육, 의무교육, 직무교육 참여</td>
                         <td class="note-cell">케어포 8-7</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-1" data-cycle="반기별" data-base-cycle="반기별" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">직원 대상 감염관리 교육 실시</td>
                         <td class="note-cell">케어포 8-7</td>
                         <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-2" data-cycle="반기별" data-base-cycle="반기별" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">요양보호사 대상 응급처치 방법 교육</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-3" data-cycle="분기별" data-base-cycle="분기별" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">직원 및 수급자 대상 감염예방 교육</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-4" data-cycle="반기별" data-base-cycle="반기별" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">요양보호사 대상 욕창예방 방법 교육</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
@@ -319,7 +510,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 09.jpg')">평가지표 9: 안전하고 쾌적한 환경조성</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2009.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2009-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2009-3.jpg'])">평가지표 9: 안전하고 쾌적한 환경조성</div>
             <table>
                 <thead>
                     <tr>
@@ -330,12 +521,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-5" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 9: 안전하고 쾌적한 환경조성">
                         <td class="task-cell">간호실 청결 및 안전 관리</td>
                         <td class="note-cell">현장</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-6" data-cycle="주 1회/월 1회" data-base-cycle="주 1회" data-section="평가지표 9: 안전하고 쾌적한 환경조성">
                         <td class="task-cell">의료 장비 점검 및 관리</td>
                         <td class="note-cell">지면 파일</td>
                         <td class="cycle-cell" style="background-color: #E5F3FF;">주 1회/월 1회</td>
@@ -345,7 +536,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 10.jpg')">평가지표 10: 낙상예방 환경조성</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2010.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2010-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2010-3.jpg'])">평가지표 10: 낙상예방 환경조성</div>
             <table>
                 <thead>
                     <tr>
@@ -356,7 +547,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-7" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 10: 낙상예방 환경조성">
                         <td class="task-cell">낙상 사고 발생 시 응급처치 및 기록</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -366,7 +557,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 20.jpg')">평가지표 20: 생애말기돌봄</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2020.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2020-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2020-3.jpg'])">평가지표 20: 생애말기돌봄</div>
             <table>
                 <thead>
                     <tr>
@@ -377,17 +568,17 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-8" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 20: 생애말기돌봄">
                         <td class="task-cell">수급자의 생애말기 돌봄 준비 및 가족 상담</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-9" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 20: 생애말기돌봄">
                         <td class="task-cell">임종 수급자에 대한 적절한 돌봄 제공</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-10" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 20: 생애말기돌봄">
                         <td class="task-cell">사망 후 필요한 절차 지원 및 가족 상담</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -397,7 +588,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 21.jpg')">평가지표 21: 응급상황대응체계</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2021.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2021-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2021-3.jpg'])">평가지표 21: 응급상황대응체계</div>
             <table>
                 <thead>
                     <tr>
@@ -408,17 +599,17 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-11" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 21: 응급상황대응체계">
                         <td class="task-cell">응급상황 발생 시 즉시 대응 및 병원 이송 조치</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-12" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 21: 응급상황대응체계">
                         <td class="task-cell">응급약품 비치 및 유효기간 확인</td>
                         <td class="note-cell">간호실</td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-13" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 21: 응급상황대응체계">
                         <td class="task-cell">협약의료기관과의 협력 및 연계</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -428,7 +619,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 22.jpg')">평가지표 22: 감염관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2022.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2022-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2022-3.jpg'])">평가지표 22: 감염관리</div>
             <table>
                 <thead>
                     <tr>
@@ -439,27 +630,27 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-14" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 22: 감염관리">
                         <td class="task-cell">수급자와 직원의 안전을 위한 감염관리 활동 실시</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-15" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 22: 감염관리">
                         <td class="task-cell">감염병 발생 시 즉시 필요한 조치 및 보고</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-16" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 22: 감염관리">
                         <td class="task-cell">손위생 수칙 준수 및 직원 모니터링</td>
                         <td class="note-cell">현장</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-17" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 22: 감염관리">
                         <td class="task-cell">감염병 의심자 또는 확진자 격리 관리</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-18" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 22: 감염관리">
                         <td class="task-cell">감염관리 활동 기록 및 보고</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -469,7 +660,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 23.jpg')">평가지표 23: 수급자 건강관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2023.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2023-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2023-3.jpg'])">평가지표 23: 수급자 건강관리</div>
             <table>
                 <thead>
                     <tr>
@@ -480,27 +671,27 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-19" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 23: 수급자 건강관리">
                         <td class="task-cell">수급자 감염병 건강진단 정기 실시 관리</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-20" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 23: 수급자 건강관리">
                         <td class="task-cell">수급자 일상 건강상태 관찰 및 기록</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-21" data-cycle="주 1회/월 1회" data-base-cycle="주 1회" data-section="평가지표 23: 수급자 건강관리">
                         <td class="task-cell">수급자 활력징후(혈압, 체온, 맥박, 호흡) 정기 측정</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #E5F3FF;">주 1회/월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-22" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 23: 수급자 건강관리">
                         <td class="task-cell">수급자 체중 정기 측정 및 기록</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-23" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 23: 수급자 건강관리">
                         <td class="task-cell">수급자 병원 진료 동행 및 진료결과 기록</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -510,7 +701,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 24.jpg')">평가지표 24: 통합적사정</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024-3.jpg'])">평가지표 24: 통합적사정</div>
             <table>
                 <thead>
                     <tr>
@@ -521,7 +712,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-24" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 24: 통합적사정">
                         <td class="task-cell">신규 입소자 및 재평가 대상자의 건강상태 평가</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -531,7 +722,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 25.jpg')">평가지표 25: 급여제공계획수립 및 제공</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025-3.jpg'])">평가지표 25: 급여제공계획수립 및 제공</div>
             <table>
                 <thead>
                     <tr>
@@ -542,17 +733,17 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-25" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 25: 급여제공계획수립 및 제공">
                         <td class="task-cell">간호 대상자에 대한 초기 평가 실시</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-26" data-cycle="분기별" data-base-cycle="분기별" data-section="평가지표 25: 급여제공계획수립 및 제공">
                         <td class="task-cell">사례관리 회의 참석 (분기별) 및 의견 제시</td>
                         <td class="note-cell">케어포 8-5</td>
                         <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-27" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 25: 급여제공계획수립 및 제공">
                         <td class="task-cell">물리치료사와 수급자 상태 공유 및 협업</td>
                         <td class="note-cell">구두/케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -562,7 +753,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 26.jpg')">평가지표 26: 구강관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2026.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2026-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2026-3.jpg'])">평가지표 26: 구강관리</div>
             <table>
                 <thead>
                     <tr>
@@ -573,12 +764,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-28" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 26: 구강관리">
                         <td class="task-cell">수급자의 구강청결과 구강건강을 위한 관리 및 지도</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-29" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 26: 구강관리">
                         <td class="task-cell">수급자의 구강상태 관찰 및 이상 시 조치</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
@@ -588,7 +779,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 27.jpg')">평가지표 27: 목욕 서비스</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2027.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2027-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2027-3.jpg'])">평가지표 27: 목욕 서비스</div>
             <table>
                 <thead>
                     <tr>
@@ -599,12 +790,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-30" data-cycle="주 2회" data-base-cycle="주 2회" data-section="평가지표 27: 목욕 서비스">
                         <td class="task-cell">수급자가 청결하고 쾌적한 신체 상태를 유지할 수 있도록 목욕 서비스 지원 및 관찰</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFF5E5;">주 2회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-31" data-cycle="주 2회" data-base-cycle="주 2회" data-section="평가지표 27: 목욕 서비스">
                         <td class="task-cell">목욕 전후 수급자 건강상태 확인</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFF5E5;">주 2회</td>
@@ -614,7 +805,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 28.jpg')">평가지표 28: 배설관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2028.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2028-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2028-3.jpg'])">평가지표 28: 배설관리</div>
             <table>
                 <thead>
                     <tr>
@@ -625,12 +816,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-32" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 28: 배설관리">
                         <td class="task-cell">수급자의 기능 상태에 따른 배설서비스 지원 및 관찰</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-33" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 28: 배설관리">
                         <td class="task-cell">수급자의 배설 상태 관찰 및 기록</td>
                         <td class="note-cell">케어포 2-2</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
@@ -640,7 +831,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 29.jpg')">평가지표 29: 욕창예방 및 관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2029.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2029-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2029-3.jpg'])">평가지표 29: 욕창예방 및 관리</div>
             <table>
                 <thead>
                     <tr>
@@ -651,12 +842,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-34" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 29: 욕창예방 및 관리">
                         <td class="task-cell">욕창 발생 위험이 있는 수급자 관리 (체위변경, 피부관찰)</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-35" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 29: 욕창예방 및 관리">
                         <td class="task-cell">욕창 발생 수급자에 대한 적절한 조치 및 관리</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
@@ -666,7 +857,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 30.jpg')">평가지표 30: 투약 및 약품관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2030.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2030-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2030-3.jpg'])">평가지표 30: 투약 및 약품관리</div>
             <table>
                 <thead>
                     <tr>
@@ -677,12 +868,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-36" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 30: 투약 및 약품관리">
                         <td class="task-cell">수급자의 투약 관련 정보를 숙지하여 정확하게 투약</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-37" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 30: 투약 및 약품관리">
                         <td class="task-cell">약품을 안전하게 보관 및 관리 (유효기간 확인)</td>
                         <td class="note-cell">간호실</td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
@@ -692,7 +883,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 37.jpg')">평가지표 37: 급여제공결과평가</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2037.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2037-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2037-3.jpg'])">평가지표 37: 급여제공결과평가</div>
             <table>
                 <thead>
                     <tr>
@@ -703,7 +894,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-38" data-cycle="분기별" data-base-cycle="분기별" data-section="평가지표 37: 급여제공결과평가">
                         <td class="task-cell">수급자의 건강상태 변화 확인을 위한 정기 평가</td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
@@ -715,46 +906,249 @@
     </div>
     
     <!-- 이미지 모달 -->
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="modalImage">
-        <div id="imageError" class="image-error" style="display: none;">
-            이미지를 불러올 수 없습니다.<br>
-            경로를 확인해주세요: <span id="imagePath"></span>
+    <div id="imageModal" class="modal">
+        <div class="modal-content-wrapper">
+            <span class="close" onclick="closeImageModal()">&times;</span>
+            
+            <button class="nav-button prev" onclick="changeImage(-1)">&#10094;</button>
+            <button class="nav-button next" onclick="changeImage(1)">&#10095;</button>
+            
+            <div id="loading" class="loading">이미지 로딩 중...</div>
+            <img class="modal-content" id="modalImage" style="display: none;">
+            <div id="imageError" class="image-error" style="display: none;">
+                이미지를 불러올 수 없습니다.
+            </div>
+            
+            <div class="image-controls">
+                <div class="image-counter" id="imageCounter"></div>
+                <button class="control-button" onclick="zoomIn()">🔍 확대</button>
+                <button class="control-button" onclick="zoomOut()">🔍 축소</button>
+                <button class="control-button" onclick="resetZoom()">↺ 원본</button>
+                <button class="control-button" onclick="downloadImage()">⬇ 다운로드</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 주기별 업무 모달 -->
+    <div id="cycleModal" class="cycle-modal">
+        <div class="cycle-modal-content">
+            <div class="cycle-modal-header">
+                <div class="cycle-modal-title">
+                    <span class="cycle-badge" id="cycleBadge"></span>
+                    <span id="cycleModalTitle">업무 목록</span>
+                </div>
+                <span class="cycle-close" onclick="closeCycleModal()">&times;</span>
+            </div>
+            <div id="cycleTaskList"></div>
         </div>
     </div>
     
     <script>
-        function openModal(imagePath) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            const imageError = document.getElementById('imageError');
-            const imagePathSpan = document.getElementById('imagePath');
+        let currentImages = [];
+        let currentImageIndex = 0;
+        let currentZoom = 1;
+        
+        const COLORS = {
+            '매일': '#FFE5E5',
+            '주 1회': '#E5F3FF',
+            '주 2회': '#FFF5E5',
+            '월 1회': '#E5FFE5',
+            '분기별': '#F5E5FF',
+            '반기별': '#FFE5F5',
+            '연 1회': '#FFFFE5',
+            '수시': '#F0F0F0'
+        };
+        
+        function openImageModal(imageUrls) {
+            currentImages = imageUrls.map(url => url.replace(/'/g, ''));
+            currentImageIndex = 0;
+            currentZoom = 1;
             
+            const modal = document.getElementById('imageModal');
             modal.style.display = "block";
-            modalImg.style.display = "block";
+            
+            loadImage(0);
+        }
+        
+        function loadImage(index) {
+            const modalImg = document.getElementById('modalImage');
+            const loading = document.getElementById('loading');
+            const imageError = document.getElementById('imageError');
+            
+            loading.style.display = "block";
+            modalImg.style.display = "none";
             imageError.style.display = "none";
             
-            modalImg.src = imagePath;
+            modalImg.src = currentImages[index];
+            currentZoom = 1;
+            modalImg.style.transform = 'scale(1)';
             
-            // 이미지 로드 실패 시
+            modalImg.onload = function() {
+                loading.style.display = "none";
+                modalImg.style.display = "block";
+                updateCounter();
+            };
+            
             modalImg.onerror = function() {
-                modalImg.style.display = "none";
-                imageError.style.display = "block";
-                imagePathSpan.textContent = imagePath;
+                if (index === 0) {
+                    loading.style.display = "none";
+                    imageError.style.display = "block";
+                } else {
+                    currentImages = currentImages.slice(0, index);
+                    if (currentImageIndex >= currentImages.length) {
+                        currentImageIndex = currentImages.length - 1;
+                    }
+                    updateCounter();
+                }
             };
         }
         
-        function closeModal() {
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            
+            if (currentImageIndex < 0) {
+                currentImageIndex = currentImages.length - 1;
+            } else if (currentImageIndex >= currentImages.length) {
+                currentImageIndex = 0;
+            }
+            
+            loadImage(currentImageIndex);
+        }
+        
+        function updateCounter() {
+            const validImages = currentImages.length;
+            document.getElementById('imageCounter').textContent = 
+                `${currentImageIndex + 1} / ${validImages}`;
+        }
+        
+        function zoomIn() {
+            currentZoom += 0.2;
+            if (currentZoom > 3) currentZoom = 3;
+            document.getElementById('modalImage').style.transform = `scale(${currentZoom})`;
+        }
+        
+        function zoomOut() {
+            currentZoom -= 0.2;
+            if (currentZoom < 0.5) currentZoom = 0.5;
+            document.getElementById('modalImage').style.transform = `scale(${currentZoom})`;
+        }
+        
+        function resetZoom() {
+            currentZoom = 1;
+            document.getElementById('modalImage').style.transform = 'scale(1)';
+        }
+        
+        function downloadImage() {
+            const img = document.getElementById('modalImage');
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.download = `평가지표_이미지_${currentImageIndex + 1}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function closeImageModal() {
             document.getElementById('imageModal').style.display = "none";
         }
         
-        // ESC 키로 모달 닫기
+        // 업무로 스크롤 이동 및 하이라이트
+        function scrollToTask(taskId) {
+            closeCycleModal();
+            
+            const taskRow = document.getElementById(taskId);
+            if (taskRow) {
+                // 부드러운 스크롤
+                taskRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // 하이라이트 효과
+                taskRow.classList.add('highlighted');
+                setTimeout(() => {
+                    taskRow.classList.remove('highlighted');
+                }, 2000);
+            }
+        }
+        
+        // 주기별 업무 표시 (복합 주기 포함)
+        function showCycleTasks(cycle) {
+            const modal = document.getElementById('cycleModal');
+            const title = document.getElementById('cycleModalTitle');
+            const badge = document.getElementById('cycleBadge');
+            const taskList = document.getElementById('cycleTaskList');
+            
+            title.textContent = '업무 목록';
+            badge.textContent = cycle;
+            badge.style.backgroundColor = COLORS[cycle] || '#F0F0F0';
+            
+            // 해당 주기의 모든 업무 찾기
+            const tasks = [];
+            let taskIndex = 0;
+            document.querySelectorAll('tr[data-base-cycle]').forEach(row => {
+                const baseCycle = row.getAttribute('data-base-cycle');
+                const fullCycle = row.getAttribute('data-cycle');
+                
+                if (baseCycle === cycle || fullCycle === cycle) {
+                    const task = row.querySelector('.task-cell').innerHTML;
+                    const note = row.querySelector('.note-cell').textContent;
+                    const section = row.getAttribute('data-section');
+                    const taskId = row.id;
+                    
+                    tasks.push({ task, note, section, taskId });
+                }
+            });
+            
+            // 업무 목록 생성 (클릭 가능)
+            if (tasks.length === 0) {
+                taskList.innerHTML = '<p style="text-align: center; color: #999;">해당 주기의 업무가 없습니다.</p>';
+            } else {
+                taskList.innerHTML = tasks.map(t => `
+                    <div class="cycle-task-item" onclick="scrollToTask('${t.taskId}')">
+                        <div class="cycle-task-title">${t.task}</div>
+                        <div class="cycle-task-note">${t.note}</div>
+                        <div class="cycle-task-section">📍 ${t.section}</div>
+                    </div>
+                `).join('');
+            }
+            
+            modal.style.display = "block";
+        }
+        
+        function closeCycleModal() {
+            document.getElementById('cycleModal').style.display = "none";
+        }
+        
+        // 키보드 단축키
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
+            const imageModal = document.getElementById('imageModal');
+            
+            if (imageModal.style.display === 'block') {
+                if (event.key === 'Escape') {
+                    closeImageModal();
+                } else if (event.key === 'ArrowLeft') {
+                    changeImage(-1);
+                } else if (event.key === 'ArrowRight') {
+                    changeImage(1);
+                } else if (event.key === '+' || event.key === '=') {
+                    zoomIn();
+                } else if (event.key === '-' || event.key === '_') {
+                    zoomOut();
+                }
+            } else if (event.key === 'Escape') {
+                closeCycleModal();
             }
         });
+        
+        // 배경 클릭 시 모달 닫기
+        window.onclick = function(event) {
+            const imageModal = document.getElementById('imageModal');
+            const cycleModal = document.getElementById('cycleModal');
+            if (event.target === imageModal) {
+                closeImageModal();
+            }
+            if (event.target === cycleModal) {
+                closeCycleModal();
+            }
+        }
     </script>
 </body>
 </html>

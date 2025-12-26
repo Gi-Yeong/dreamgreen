@@ -16,6 +16,7 @@
             background-color: #f5f5f5;
             padding: 20px;
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
         
         .container {
@@ -62,6 +63,13 @@
             padding: 8px 12px;
             border-radius: 6px;
             border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .legend-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
         
         .legend-color {
@@ -89,20 +97,19 @@
             margin-bottom: 15px;
             font-size: 1.1em;
             font-weight: bold;
-            cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
         
-        .section-title:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
         .section-title.clickable {
             cursor: pointer;
+        }
+        
+        .section-title.clickable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .section-title.clickable::after {
@@ -133,8 +140,22 @@
             vertical-align: top;
         }
         
+        tr {
+            transition: all 0.3s ease;
+        }
+        
         tr:hover {
             background-color: #f8f9fa;
+        }
+        
+        tr.highlighted {
+            background-color: #fff3cd !important;
+            animation: highlight 1.5s ease;
+        }
+        
+        @keyframes highlight {
+            0% { background-color: #ffc107; }
+            100% { background-color: #fff3cd; }
         }
         
         .task-cell {
@@ -153,7 +174,7 @@
             border-radius: 4px;
         }
         
-        /* 모달 스타일 */
+        /* 이미지 모달 스타일 */
         .modal {
             display: none;
             position: fixed;
@@ -163,7 +184,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0,0,0,0.95);
             animation: fadeIn 0.3s;
         }
         
@@ -172,21 +193,26 @@
             to { opacity: 1; }
         }
         
+        .modal-content-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
         .modal-content {
-            margin: auto;
-            display: block;
             max-width: 90%;
             max-height: 90%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            object-fit: contain;
             animation: zoomIn 0.3s;
+            transition: transform 0.3s ease;
         }
         
         @keyframes zoomIn {
-            from { transform: translate(-50%, -50%) scale(0.7); }
-            to { transform: translate(-50%, -50%) scale(1); }
+            from { transform: scale(0.7); }
+            to { transform: scale(1); }
         }
         
         .close {
@@ -196,14 +222,82 @@
             color: #f1f1f1;
             font-size: 50px;
             font-weight: bold;
-            transition: 0.3s;
             cursor: pointer;
+            z-index: 1001;
+            transition: 0.3s;
+        }
+        
+        .close:hover {
+            color: #ff5555;
+        }
+        
+        /* 이미지 네비게이션 버튼 */
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255,255,255,0.3);
+            color: white;
+            font-size: 40px;
+            padding: 20px 25px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: 0.3s;
             z-index: 1001;
         }
         
-        .close:hover,
-        .close:focus {
-            color: #bbb;
+        .nav-button:hover {
+            background-color: rgba(255,255,255,0.5);
+        }
+        
+        .prev {
+            left: 30px;
+        }
+        
+        .next {
+            right: 30px;
+        }
+        
+        /* 이미지 컨트롤 바 */
+        .image-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 15px 25px;
+            border-radius: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 1001;
+        }
+        
+        .control-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .control-button:hover {
+            background: rgba(255,255,255,0.4);
+        }
+        
+        .image-counter {
+            color: white;
+            font-size: 16px;
+        }
+        
+        .loading {
+            color: white;
+            text-align: center;
+            font-size: 1.5em;
         }
         
         .image-error {
@@ -213,19 +307,116 @@
             font-size: 1.2em;
         }
         
+        /* 주기별 업무 모달 */
+        .cycle-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+        
+        .cycle-modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideDown 0.3s;
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .cycle-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .cycle-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+            color: #2c3e50;
+        }
+        
+        .cycle-badge {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .cycle-close {
+            color: #aaa;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .cycle-close:hover {
+            color: #000;
+        }
+        
+        .cycle-task-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #3498db;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .cycle-task-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .cycle-task-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .cycle-task-note {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .cycle-task-section {
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .container {
-                box-shadow: none;
-                padding: 20px;
-            }
-            
-            .section {
-                page-break-inside: avoid;
+            .legend-item {
+                cursor: default;
             }
             
             .section-title.clickable::after {
@@ -239,38 +430,38 @@
         <h1>최선웅 업무</h1>
         
         <div class="legend">
-            <h2>📋 주기별 색상 범례</h2>
+            <h2>📋 주기별 색상 범례 (클릭하여 해당 주기 업무 보기)</h2>
             <div class="legend-items">
 
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('매일')">
                     <div class="legend-color" style="background-color: #FFE5E5;">매일</div>
                     <span>연한 핑크</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('주 1회')">
                     <div class="legend-color" style="background-color: #E5F3FF;">주 1회</div>
                     <span>연한 파랑</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('주 2회')">
                     <div class="legend-color" style="background-color: #FFF5E5;">주 2회</div>
                     <span>연한 오렌지</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('월 1회')">
                     <div class="legend-color" style="background-color: #E5FFE5;">월 1회</div>
                     <span>연한 초록</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('분기별')">
                     <div class="legend-color" style="background-color: #F5E5FF;">분기별</div>
                     <span>연한 보라</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('반기별')">
                     <div class="legend-color" style="background-color: #FFE5F5;">반기별</div>
                     <span>연한 자주</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('연 1회')">
                     <div class="legend-color" style="background-color: #FFFFE5;">연 1회</div>
                     <span>연한 노랑</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" onclick="showCycleTasks('수시')">
                     <div class="legend-color" style="background-color: #F0F0F0;">수시</div>
                     <span>연한 회색</span>
                 </div>
@@ -278,7 +469,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2001.jpg')">평가지표 1: 운영규정</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2001.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2001-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2001-3.jpg'])">평가지표 1: 운영규정</div>
             <table>
                 <thead>
                     <tr>
@@ -289,12 +480,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-0" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 1: 운영규정">
                         <td class="task-cell">매일 시설 운영일지 작성 <span style="color: #666; font-size: 0.9em;">(기존 민희진 업무였음)</span></td>
                         <td class="note-cell">케어포 6-4</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-1" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 1: 운영규정">
                         <td class="task-cell">운영규정 준비 (년초)</td>
                         <td class="note-cell">지면 파일</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
@@ -304,7 +495,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 02.jpg')">평가지표 2: 사업계획 및 평가</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2002.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2002-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2002-3.jpg'])">평가지표 2: 사업계획 및 평가</div>
             <table>
                 <thead>
                     <tr>
@@ -315,12 +506,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-2" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 2: 사업계획 및 평가">
                         <td class="task-cell">연간 일정 계획</td>
                         <td class="note-cell">케어포 8-3</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-3" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 2: 사업계획 및 평가">
                         <td class="task-cell">사업 계획서 준비 (년초)</td>
                         <td class="note-cell">지면 파일</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
@@ -330,7 +521,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 04.jpg')">평가지표 4: 직원교육</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2004-3.jpg'])">평가지표 4: 직원교육</div>
             <table>
                 <thead>
                     <tr>
@@ -341,32 +532,32 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-4" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">법정교육, 의무교육, 13급여제공교육(월), 분기별, 반기, 연간</td>
                         <td class="note-cell">시청보고, 케어포 작성</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-5" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">매년초 전연도 법정의무교육 이수 현황 시청 보고</td>
                         <td class="note-cell">희망이음</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-6" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">13가지 급여제공 직원교육 (매월)</td>
                         <td class="note-cell">케어포 작성</td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-7" data-cycle="분기별" data-base-cycle="분기별" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">노인인권 및 노인학대 예방교육 (분기별)</td>
                         <td class="note-cell">케어포 작성</td>
                         <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-8" data-cycle="반기별" data-base-cycle="반기별" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">재난 상황 대처 훈련/구강교육 (반기별)</td>
                         <td class="note-cell">케어포 작성</td>
                         <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-9" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 4: 직원교육">
                         <td class="task-cell">교육일지 작성 (인권, 재난, 구강, 직무 등) <span style="color: #666; font-size: 0.9em;">(기존 민희진 업무였음)</span></td>
                         <td class="note-cell">케어포 8-7</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -376,7 +567,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 05.jpg')">평가지표 5: 직원건강관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2005.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2005-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2005-3.jpg'])">평가지표 5: 직원건강관리</div>
             <table>
                 <thead>
                     <tr>
@@ -387,12 +578,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-10" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 5: 직원건강관리">
                         <td class="task-cell">직원 입사시 근로계약서, 범죄조회, 입사전 건강검진 관리</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-11" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 5: 직원건강관리">
                         <td class="task-cell">수급자/직원 연간 현황 관리 (건강검진)</td>
                         <td class="note-cell">케어포 1-7</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
@@ -402,7 +593,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 07.jpg')">평가지표 7: 직원인권보호</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2007.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2007-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2007-3.jpg'])">평가지표 7: 직원인권보호</div>
             <table>
                 <thead>
                     <tr>
@@ -413,12 +604,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-12" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 7: 직원인권보호">
                         <td class="task-cell">직원 인권보호 활동 및 고충처리 <span style="color: #0066cc; font-weight: bold;">(새로 추가됨)</span></td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-13" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 7: 직원인권보호">
                         <td class="task-cell">수급자/직원 연간 현황 관리 (직원인권 보호)</td>
                         <td class="note-cell">케어포 1-7</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
@@ -428,7 +619,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 09.jpg')">평가지표 9: 안전하고 쾌적한 환경조성</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2009.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2009-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2009-3.jpg'])">평가지표 9: 안전하고 쾌적한 환경조성</div>
             <table>
                 <thead>
                     <tr>
@@ -439,17 +630,17 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-14" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 9: 안전하고 쾌적한 환경조성">
                         <td class="task-cell">안전점검 확인 (소방, 전기, 가스, 소독)</td>
                         <td class="note-cell">케어포 확인(작성)</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-15" data-cycle="반기별" data-base-cycle="반기별" data-section="평가지표 9: 안전하고 쾌적한 환경조성">
                         <td class="task-cell">희망이음 비정형 보고 (안전점검-하절기,동절기, 미세먼지)</td>
                         <td class="note-cell">희망이음</td>
                         <td class="cycle-cell" style="background-color: #FFE5F5;">반기별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-16" data-cycle="주별/월별" data-base-cycle="주별" data-section="평가지표 9: 안전하고 쾌적한 환경조성">
                         <td class="task-cell">각층 실내 환기 점검표 배부 (매주 또는 매월)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #E5F3FF;">주별/월별</td>
@@ -459,7 +650,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 10.jpg')">평가지표 10: 낙상예방 환경조성</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2010.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2010-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2010-3.jpg'])">평가지표 10: 낙상예방 환경조성</div>
             <table>
                 <thead>
                     <tr>
@@ -470,7 +661,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-17" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 10: 낙상예방 환경조성">
                         <td class="task-cell">희망이음 비정형 보고 (낙상예방)</td>
                         <td class="note-cell">희망이음</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -480,7 +671,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 11.jpg')">평가지표 11: 재난상황대응</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2011.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2011-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2011-3.jpg'])">평가지표 11: 재난상황대응</div>
             <table>
                 <thead>
                     <tr>
@@ -491,12 +682,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-18" data-cycle="연1회/월1회" data-base-cycle="연1회" data-section="평가지표 11: 재난상황대응">
                         <td class="task-cell">소방 안전관리 보조자 (비상 연락망 관리, 소방계획서 및 업무수행 기록표 작성)</td>
                         <td class="note-cell">계획서(년)/업무수행(월)</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연1회/월1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-19" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 11: 재난상황대응">
                         <td class="task-cell">소방계획서 준비 (년초)</td>
                         <td class="note-cell">지면 파일</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
@@ -506,7 +697,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 12.jpg')">평가지표 12: 시설안전</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2012.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2012-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2012-3.jpg'])">평가지표 12: 시설안전</div>
             <table>
                 <thead>
                     <tr>
@@ -517,22 +708,22 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-20" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 12: 시설안전">
                         <td class="task-cell">안전점검 확인 (소방, 전기, 가스)</td>
                         <td class="note-cell">케어포 확인(작성)</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-21" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 12: 시설안전">
                         <td class="task-cell">소화기 점검표 매월 확인 (지하, 1층, 2층, 3층, 4층, 옥상)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-22" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 12: 시설안전">
                         <td class="task-cell">소화기 점검표 준비 (년초)</td>
                         <td class="note-cell">지면 파일</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-23" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 12: 시설안전">
                         <td class="task-cell">희망이음 비정형 보고 (CCTV 등)</td>
                         <td class="note-cell">희망이음</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -542,7 +733,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 13.jpg')">평가지표 13: 수급자(보호자) 참여강화</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2013.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2013-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2013-3.jpg'])">평가지표 13: 수급자(보호자) 참여강화</div>
             <table>
                 <thead>
                     <tr>
@@ -553,7 +744,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-24" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 13: 수급자(보호자) 참여강화">
                         <td class="task-cell">수급자 상담/면담</td>
                         <td class="note-cell">케어포 1-4</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -563,7 +754,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 14.jpg')">평가지표 14: 가족 및 지역사회 교류</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2014.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2014-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2014-3.jpg'])">평가지표 14: 가족 및 지역사회 교류</div>
             <table>
                 <thead>
                     <tr>
@@ -574,17 +765,17 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-25" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 14: 가족 및 지역사회 교류">
                         <td class="task-cell">전화응대 및 면회/외출/외박 응대</td>
                         <td class="note-cell">일지 및 케어포 기록</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-26" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 14: 가족 및 지역사회 교류">
                         <td class="task-cell">어르신 동행 서비스 (병원진료, 마트, 카페 나들이 등)</td>
                         <td class="note-cell">원장님 부재시/차량운전</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-27" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 14: 가족 및 지역사회 교류">
                         <td class="task-cell">수급자 외출, 외박 관리</td>
                         <td class="note-cell">케어포 1-5</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
@@ -594,7 +785,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 17.jpg')">평가지표 17: 야간보호</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2017.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2017-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2017-3.jpg'])">평가지표 17: 야간보호</div>
             <table>
                 <thead>
                     <tr>
@@ -605,7 +796,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-28" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 17: 야간보호">
                         <td class="task-cell">야간 근무일지 작성 및 점검 <span style="color: #0066cc; font-weight: bold;">(새로 추가됨)</span></td>
                         <td class="note-cell">케어포</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
@@ -615,7 +806,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 18.jpg')">평가지표 18: 정보제공</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2018.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2018-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2018-3.jpg'])">평가지표 18: 정보제공</div>
             <table>
                 <thead>
                     <tr>
@@ -626,7 +817,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-29" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 18: 정보제공">
                         <td class="task-cell">어르신 입소시 입소 계약서 체결 및 동의서 받음</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -636,7 +827,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 19.jpg')">평가지표 19: 노인인권보호</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2019.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2019-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2019-3.jpg'])">평가지표 19: 노인인권보호</div>
             <table>
                 <thead>
                     <tr>
@@ -647,12 +838,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-30" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 19: 노인인권보호">
                         <td class="task-cell">신체제제기록 관리</td>
                         <td class="note-cell">케어포 2-4</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-31" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 19: 노인인권보호">
                         <td class="task-cell">수급자/직원 연간 현황 관리 (노인인권보호)</td>
                         <td class="note-cell">케어포 1-7</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
@@ -662,7 +853,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 23.jpg')">평가지표 23: 수급자 건강관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2023.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2023-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2023-3.jpg'])">평가지표 23: 수급자 건강관리</div>
             <table>
                 <thead>
                     <tr>
@@ -673,7 +864,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-32" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 23: 수급자 건강관리">
                         <td class="task-cell">수급자/직원 연간 현황 관리 (건강검진)</td>
                         <td class="note-cell">케어포 1-7</td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
@@ -683,7 +874,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 24.jpg')">평가지표 24: 통합적사정</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2024-3.jpg'])">평가지표 24: 통합적사정</div>
             <table>
                 <thead>
                     <tr>
@@ -694,22 +885,22 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-33" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 24: 통합적사정">
                         <td class="task-cell">어르신 입소상담 (상담일지 기록)</td>
                         <td class="note-cell">원장님 부재시</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-34" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 24: 통합적사정">
                         <td class="task-cell">수급자 정보 관리</td>
                         <td class="note-cell">케어포 1-1</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-35" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 24: 통합적사정">
                         <td class="task-cell">전체 수습자 기초 평가</td>
                         <td class="note-cell">케어포 1-2</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-36" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 24: 통합적사정">
                         <td class="task-cell">기초평가 관리</td>
                         <td class="note-cell">케어포 1-3</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -719,7 +910,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 25.jpg')">평가지표 25: 급여제공계획수립 및 제공</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2025-3.jpg'])">평가지표 25: 급여제공계획수립 및 제공</div>
             <table>
                 <thead>
                     <tr>
@@ -730,7 +921,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-37" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 25: 급여제공계획수립 및 제공">
                         <td class="task-cell">요양급여 제공 일지 작성 (점검후 잘못된거 수정)</td>
                         <td class="note-cell">케어포 2-1</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
@@ -740,7 +931,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 27.jpg')">평가지표 27: 목욕 서비스</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2027.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2027-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2027-3.jpg'])">평가지표 27: 목욕 서비스</div>
             <table>
                 <thead>
                     <tr>
@@ -751,12 +942,12 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-38" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 27: 목욕 서비스">
                         <td class="task-cell">케어포 목욕일정 입력 (매월초-수정시)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-39" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 27: 목욕 서비스">
                         <td class="task-cell">목욕일정 및 제공현황 관리</td>
                         <td class="note-cell">케어포 2-3</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -766,7 +957,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 28.jpg')">평가지표 28: 배설관리</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2028.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2028-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2028-3.jpg'])">평가지표 28: 배설관리</div>
             <table>
                 <thead>
                     <tr>
@@ -777,7 +968,7 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-40" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 28: 배설관리">
                         <td class="task-cell">집중배설관찰기록 관리 (어르신 입소후 집중 배설 관찰 기록)</td>
                         <td class="note-cell">케어포 2-2</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -787,7 +978,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title clickable" onclick="openModal('/images/평가지표 32.jpg')">평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**</div>
+            <div class="section-title clickable" onclick="openImageModal(['https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2032.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2032-2.jpg', 'https://raw.githubusercontent.com/Gi-Yeong/dreamgreen/main/images/%ED%8F%89%EA%B0%80%EC%A7%80%ED%91%9C%2032-3.jpg'])">평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**</div>
             <table>
                 <thead>
                     <tr>
@@ -798,57 +989,57 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-41" data-cycle="매일/주별" data-base-cycle="매일" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">인지 프로그램 계획, 진행(참여), 작성, 사진촬영, 밴드 작성</td>
                         <td class="note-cell">케어포, 지면 파일</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일/주별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-42" data-cycle="분기별" data-base-cycle="분기별" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">인지 프로그램 분기별 그룹 평가 및 반영</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #F5E5FF;">분기별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-43" data-cycle="연 1회" data-base-cycle="연 1회" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">인지 연간계획서 작성 (연 1회)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #FFFFE5;">연 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-44" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">신규 수급자 인지 그룹 설정</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-45" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">매달 인지 외부강사 메일 확인</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-46" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">케어포 인지 프로그램 등록 (매달 입력)</td>
                         <td class="note-cell">케어포, 지면 파일</td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-47" data-cycle="매일/주별" data-base-cycle="매일" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">인지 프로그램 제공기록 관리</td>
                         <td class="note-cell">케어포 5-1</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일/주별</td>
                     </tr>
-                    <tr>
+                    <tr id="task-48" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">인지 프로그램 외부강사/자원봉사 관리</td>
                         <td class="note-cell">케어포 5-1-1</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-49" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">인지 프로그램 일정관리</td>
                         <td class="note-cell">케어포 5-2</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-50" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">인지 프로그램 수급자 관리</td>
                         <td class="note-cell">케어포 5-3</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-51" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 32: 인지기능 프로그램 **(기존 민희진 업무였음)**">
                         <td class="task-cell">인지 프로그램 정보관리</td>
                         <td class="note-cell">케어포 5-4</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
@@ -869,17 +1060,17 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-52" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 전체: 평가 관리">
                         <td class="task-cell">평가 지표별 관리 확인 (케어포 평가 지표별 수시 확인, 잘못된거 수정)</td>
                         <td class="note-cell">25년 평가 항목 기준</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-53" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 전체: 평가 관리">
                         <td class="task-cell">케어포 일일 점검 확인 (케어포 6-2 매일 확인)</td>
                         <td class="note-cell">케어포 확인(작성)</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-54" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 전체: 평가 관리">
                         <td class="task-cell">케어포 정기점검 확인 (케어포 6-3 매월 확인)</td>
                         <td class="note-cell">케어포 확인(작성)</td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
@@ -900,67 +1091,67 @@
                 </thead>
                 <tbody>
 
-                    <tr>
+                    <tr id="task-55" data-cycle="주 1회" data-base-cycle="주 1회" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">업무일지 체크 4층 (매주 월요일 요양팀 제출 확인)</td>
                         <td class="note-cell">지면 파일</td>
                         <td class="cycle-cell" style="background-color: #E5F3FF;">주 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-56" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">매일 일정관리 (아침 라운딩, 저녁 라운딩, 퇴근시 다음날 일정 단톡방 게시)</td>
                         <td class="note-cell">매일 스케줄 체크</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-57" data-cycle="매일" data-base-cycle="매일" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">요양보호사 급여일지 확인 (요양급여 제공기록) (케어포 잘못된거 수정)</td>
                         <td class="note-cell">(2,3,4 층)</td>
                         <td class="cycle-cell" style="background-color: #FFE5E5;">매일</td>
                     </tr>
-                    <tr>
+                    <tr id="task-58" data-cycle="주 2회" data-base-cycle="주 2회" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">물품 반출(화,토), 물품 신청(토), 비품 반입 등록 <span style="color: #666; font-size: 0.9em;">(기존 민희진 업무였음)</span></td>
                         <td class="note-cell">전산/케어포</td>
                         <td class="cycle-cell" style="background-color: #FFF5E5;">주 2회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-59" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">시청, 공단 전화응대 (보고사항 및 어르신 등급갱신 등)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-60" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">입소자 현황표 관리 (어르신 입·퇴소시 현황표 수정-각층 게시)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-61" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">직원 현황표 관리 (직원 입·퇴사시 현황표 수정-각층 게시)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-62" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">직원 입사 면담(상담)</td>
                         <td class="note-cell">원장님 부재시</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-63" data-cycle="월 1회" data-base-cycle="월 1회" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">케어포 직원 근무표 입력 (매월초-수정시)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #E5FFE5;">월 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-64" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">직원 정보 관리</td>
                         <td class="note-cell">케어포 8-1</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-65" data-cycle="수시" data-base-cycle="수시" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">직원 근무일정표 입력</td>
                         <td class="note-cell">케어포 8-2</td>
                         <td class="cycle-cell" style="background-color: #F0F0F0;">수시</td>
                     </tr>
-                    <tr>
+                    <tr id="task-66" data-cycle="주 1회" data-base-cycle="주 1회" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">주일 근무시 예배 보조 (주보출력 30장 내외/PPT수정-찬양,성경말씀)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #E5F3FF;">주 1회</td>
                     </tr>
-                    <tr>
+                    <tr id="task-67" data-cycle="주별/월별" data-base-cycle="주별" data-section="평가지표 미해당 일상 업무">
                         <td class="task-cell">각층 업무일지 배부 (매주 또는 매월)</td>
                         <td class="note-cell"></td>
                         <td class="cycle-cell" style="background-color: #E5F3FF;">주별/월별</td>
@@ -972,46 +1163,249 @@
     </div>
     
     <!-- 이미지 모달 -->
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="modalImage">
-        <div id="imageError" class="image-error" style="display: none;">
-            이미지를 불러올 수 없습니다.<br>
-            경로를 확인해주세요: <span id="imagePath"></span>
+    <div id="imageModal" class="modal">
+        <div class="modal-content-wrapper">
+            <span class="close" onclick="closeImageModal()">&times;</span>
+            
+            <button class="nav-button prev" onclick="changeImage(-1)">&#10094;</button>
+            <button class="nav-button next" onclick="changeImage(1)">&#10095;</button>
+            
+            <div id="loading" class="loading">이미지 로딩 중...</div>
+            <img class="modal-content" id="modalImage" style="display: none;">
+            <div id="imageError" class="image-error" style="display: none;">
+                이미지를 불러올 수 없습니다.
+            </div>
+            
+            <div class="image-controls">
+                <div class="image-counter" id="imageCounter"></div>
+                <button class="control-button" onclick="zoomIn()">🔍 확대</button>
+                <button class="control-button" onclick="zoomOut()">🔍 축소</button>
+                <button class="control-button" onclick="resetZoom()">↺ 원본</button>
+                <button class="control-button" onclick="downloadImage()">⬇ 다운로드</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 주기별 업무 모달 -->
+    <div id="cycleModal" class="cycle-modal">
+        <div class="cycle-modal-content">
+            <div class="cycle-modal-header">
+                <div class="cycle-modal-title">
+                    <span class="cycle-badge" id="cycleBadge"></span>
+                    <span id="cycleModalTitle">업무 목록</span>
+                </div>
+                <span class="cycle-close" onclick="closeCycleModal()">&times;</span>
+            </div>
+            <div id="cycleTaskList"></div>
         </div>
     </div>
     
     <script>
-        function openModal(imagePath) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            const imageError = document.getElementById('imageError');
-            const imagePathSpan = document.getElementById('imagePath');
+        let currentImages = [];
+        let currentImageIndex = 0;
+        let currentZoom = 1;
+        
+        const COLORS = {
+            '매일': '#FFE5E5',
+            '주 1회': '#E5F3FF',
+            '주 2회': '#FFF5E5',
+            '월 1회': '#E5FFE5',
+            '분기별': '#F5E5FF',
+            '반기별': '#FFE5F5',
+            '연 1회': '#FFFFE5',
+            '수시': '#F0F0F0'
+        };
+        
+        function openImageModal(imageUrls) {
+            currentImages = imageUrls.map(url => url.replace(/'/g, ''));
+            currentImageIndex = 0;
+            currentZoom = 1;
             
+            const modal = document.getElementById('imageModal');
             modal.style.display = "block";
-            modalImg.style.display = "block";
+            
+            loadImage(0);
+        }
+        
+        function loadImage(index) {
+            const modalImg = document.getElementById('modalImage');
+            const loading = document.getElementById('loading');
+            const imageError = document.getElementById('imageError');
+            
+            loading.style.display = "block";
+            modalImg.style.display = "none";
             imageError.style.display = "none";
             
-            modalImg.src = imagePath;
+            modalImg.src = currentImages[index];
+            currentZoom = 1;
+            modalImg.style.transform = 'scale(1)';
             
-            // 이미지 로드 실패 시
+            modalImg.onload = function() {
+                loading.style.display = "none";
+                modalImg.style.display = "block";
+                updateCounter();
+            };
+            
             modalImg.onerror = function() {
-                modalImg.style.display = "none";
-                imageError.style.display = "block";
-                imagePathSpan.textContent = imagePath;
+                if (index === 0) {
+                    loading.style.display = "none";
+                    imageError.style.display = "block";
+                } else {
+                    currentImages = currentImages.slice(0, index);
+                    if (currentImageIndex >= currentImages.length) {
+                        currentImageIndex = currentImages.length - 1;
+                    }
+                    updateCounter();
+                }
             };
         }
         
-        function closeModal() {
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            
+            if (currentImageIndex < 0) {
+                currentImageIndex = currentImages.length - 1;
+            } else if (currentImageIndex >= currentImages.length) {
+                currentImageIndex = 0;
+            }
+            
+            loadImage(currentImageIndex);
+        }
+        
+        function updateCounter() {
+            const validImages = currentImages.length;
+            document.getElementById('imageCounter').textContent = 
+                `${currentImageIndex + 1} / ${validImages}`;
+        }
+        
+        function zoomIn() {
+            currentZoom += 0.2;
+            if (currentZoom > 3) currentZoom = 3;
+            document.getElementById('modalImage').style.transform = `scale(${currentZoom})`;
+        }
+        
+        function zoomOut() {
+            currentZoom -= 0.2;
+            if (currentZoom < 0.5) currentZoom = 0.5;
+            document.getElementById('modalImage').style.transform = `scale(${currentZoom})`;
+        }
+        
+        function resetZoom() {
+            currentZoom = 1;
+            document.getElementById('modalImage').style.transform = 'scale(1)';
+        }
+        
+        function downloadImage() {
+            const img = document.getElementById('modalImage');
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.download = `평가지표_이미지_${currentImageIndex + 1}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function closeImageModal() {
             document.getElementById('imageModal').style.display = "none";
         }
         
-        // ESC 키로 모달 닫기
+        // 업무로 스크롤 이동 및 하이라이트
+        function scrollToTask(taskId) {
+            closeCycleModal();
+            
+            const taskRow = document.getElementById(taskId);
+            if (taskRow) {
+                // 부드러운 스크롤
+                taskRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // 하이라이트 효과
+                taskRow.classList.add('highlighted');
+                setTimeout(() => {
+                    taskRow.classList.remove('highlighted');
+                }, 2000);
+            }
+        }
+        
+        // 주기별 업무 표시 (복합 주기 포함)
+        function showCycleTasks(cycle) {
+            const modal = document.getElementById('cycleModal');
+            const title = document.getElementById('cycleModalTitle');
+            const badge = document.getElementById('cycleBadge');
+            const taskList = document.getElementById('cycleTaskList');
+            
+            title.textContent = '업무 목록';
+            badge.textContent = cycle;
+            badge.style.backgroundColor = COLORS[cycle] || '#F0F0F0';
+            
+            // 해당 주기의 모든 업무 찾기
+            const tasks = [];
+            let taskIndex = 0;
+            document.querySelectorAll('tr[data-base-cycle]').forEach(row => {
+                const baseCycle = row.getAttribute('data-base-cycle');
+                const fullCycle = row.getAttribute('data-cycle');
+                
+                if (baseCycle === cycle || fullCycle === cycle) {
+                    const task = row.querySelector('.task-cell').innerHTML;
+                    const note = row.querySelector('.note-cell').textContent;
+                    const section = row.getAttribute('data-section');
+                    const taskId = row.id;
+                    
+                    tasks.push({ task, note, section, taskId });
+                }
+            });
+            
+            // 업무 목록 생성 (클릭 가능)
+            if (tasks.length === 0) {
+                taskList.innerHTML = '<p style="text-align: center; color: #999;">해당 주기의 업무가 없습니다.</p>';
+            } else {
+                taskList.innerHTML = tasks.map(t => `
+                    <div class="cycle-task-item" onclick="scrollToTask('${t.taskId}')">
+                        <div class="cycle-task-title">${t.task}</div>
+                        <div class="cycle-task-note">${t.note}</div>
+                        <div class="cycle-task-section">📍 ${t.section}</div>
+                    </div>
+                `).join('');
+            }
+            
+            modal.style.display = "block";
+        }
+        
+        function closeCycleModal() {
+            document.getElementById('cycleModal').style.display = "none";
+        }
+        
+        // 키보드 단축키
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
+            const imageModal = document.getElementById('imageModal');
+            
+            if (imageModal.style.display === 'block') {
+                if (event.key === 'Escape') {
+                    closeImageModal();
+                } else if (event.key === 'ArrowLeft') {
+                    changeImage(-1);
+                } else if (event.key === 'ArrowRight') {
+                    changeImage(1);
+                } else if (event.key === '+' || event.key === '=') {
+                    zoomIn();
+                } else if (event.key === '-' || event.key === '_') {
+                    zoomOut();
+                }
+            } else if (event.key === 'Escape') {
+                closeCycleModal();
             }
         });
+        
+        // 배경 클릭 시 모달 닫기
+        window.onclick = function(event) {
+            const imageModal = document.getElementById('imageModal');
+            const cycleModal = document.getElementById('cycleModal');
+            if (event.target === imageModal) {
+                closeImageModal();
+            }
+            if (event.target === cycleModal) {
+                closeCycleModal();
+            }
+        }
     </script>
 </body>
 </html>
