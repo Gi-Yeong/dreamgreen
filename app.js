@@ -22,8 +22,11 @@ const MAX_CONCURRENT_REQUESTS = 6;
 
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', async function() {
+    console.log('DOMContentLoaded 시작');
+    
     // Firebase에서 사용자 정보 가져오기 (비동기 처리)
     await waitForAuth();
+    console.log('waitForAuth 완료 후 currentUserEmail:', currentUserEmail); // ← 이 로그 추가!
     
     // URL 파라미터에서 직원 이름 가져오기
     const params = new URLSearchParams(window.location.search);
@@ -42,27 +45,35 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Firebase 인증 대기
 async function waitForAuth() {
     return new Promise((resolve) => {
-        let timeoutId; // 타임아웃 ID 저장
+        let timeoutId;
         
-        // Firebase가 로드되고 auth 객체가 준비될 때까지 대기
         const checkAuth = setInterval(() => {
             if (window.getCurrentUser) {
                 const user = window.getCurrentUser();
-                if (user) {
+                if (user && user.email) {
                     currentUserEmail = user.email;
                     console.log('로그인한 사용자:', currentUserEmail);
-                    console.log('checkAuth:', checkAuth);
-                    console.log('timeoutId:', timeoutId);
+                    
+                    // 전역 변수에 확실히 저장되었는지 재확인
+                    window.currentUserEmailBackup = user.email; // 백업 저장
+                    
                     clearInterval(checkAuth);
-                    clearTimeout(timeoutId); // 타임아웃 취소!
+                    clearTimeout(timeoutId);
                     resolve();
                 }
             }
         }, 50);
         
-        // 2초 후에도 정보가 없으면 일단 진행
         timeoutId = setTimeout(() => {
-            console.log('인증 타임아웃 - 현재 이메일:', currentUserEmail);
+            console.log('인증 타임아웃 - currentUserEmail:', currentUserEmail);
+            console.log('인증 타임아웃 - window.currentUserEmailBackup:', window.currentUserEmailBackup);
+            
+            // 백업에서 복원 시도
+            if (!currentUserEmail && window.currentUserEmailBackup) {
+                currentUserEmail = window.currentUserEmailBackup;
+                console.log('백업에서 복원:', currentUserEmail);
+            }
+            
             clearInterval(checkAuth);
             resolve();
         }, 2000);
