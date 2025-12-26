@@ -77,11 +77,17 @@ async function loadData() {
     `;
     
     try {
-        console.log('data.json 로드 시작...');
-        const dataResponse = await fetch('data.json');
-        allData = await dataResponse.json();
-        console.log('data.json 로드 성공:', Object.keys(allData));
+        console.log(`data/${currentStaff}.json 로드 시작...`);
         
+        // 개별 직원 파일 로드
+        const staffResponse = await fetch(`data/${currentStaff}.json`);
+        const staffData = await staffResponse.json();
+        
+        // allData 객체에 현재 직원 데이터 저장
+        allData[currentStaff] = staffData;
+        console.log(`data/${currentStaff}.json 로드 성공`);
+        
+        // colors.json 로드
         const colorsResponse = await fetch('colors.json');
         colors = await colorsResponse.json();
         console.log('colors.json 로드 성공');
@@ -224,7 +230,7 @@ function extractIndicatorNumber(title) {
 }
 
 // 검색 처리
-function handleSearch(e) {
+async function handleSearch(e) {
     const query = e.target.value.toLowerCase().trim();
     const searchResults = document.getElementById('searchResults');
     const searchResultsContent = document.getElementById('searchResultsContent');
@@ -234,16 +240,17 @@ function handleSearch(e) {
         return;
     }
     
-    // 모든 직원의 데이터에서 검색
+    // 모든 직원 데이터를 로드하지 않았다면 현재 직원만 검색
     const results = [];
+    const currentStaffData = allData[currentStaff];
     
-    Object.keys(allData).forEach(staffName => {
-        allData[staffName].forEach(section => {
+    if (currentStaffData) {
+        currentStaffData.forEach(section => {
             section.data.forEach((item, index) => {
                 if (item.task.toLowerCase().includes(query) || 
                     item.note.toLowerCase().includes(query)) {
                     results.push({
-                        staff: staffName,
+                        staff: currentStaff,
                         section: section.title,
                         task: item.task,
                         note: item.note,
@@ -252,7 +259,7 @@ function handleSearch(e) {
                 }
             });
         });
-    });
+    }
     
     if (results.length === 0) {
         searchResultsContent.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
@@ -260,10 +267,10 @@ function handleSearch(e) {
         let html = '';
         results.forEach(result => {
             html += `
-                <div class="search-result-item" onclick="navigateToStaff('${result.staff}')">
+                <div class="search-result-item" onclick="scrollToTask(event)">
                     <div class="search-result-task">${result.task}</div>
                     <div class="search-result-meta">
-                        👤 ${result.staff} | 📍 ${result.section} | 📅 ${result.cycle}
+                        📍 ${result.section} | 📅 ${result.cycle}
                     </div>
                 </div>
             `;
