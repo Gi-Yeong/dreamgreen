@@ -4,9 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>업무 관리 시스템</title>
+    
+    <!-- 🔒 캐시 방지 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- 공통 인증 체크 (1줄!) -->
     <script type="module" src="auth-check.js"></script>
+    
+    <!-- app.html 전용 초기화 -->
+    <script>
+        // 페이지 초기화 함수 (auth-check.js에서 호출됨)
+        window.pageInit = function(user) {
+            console.log('📊 app.html 페이지 초기화:', user.email);
+            
+            const username = user.email.split('@')[0];
+            console.log('👤 사용자명:', username);
+            
+            // 사용자 정보 표시
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            if (userNameDisplay) {
+                userNameDisplay.textContent = username + '님';
+                console.log('✅ 사용자 정보 표시 완료');
+            } else {
+                console.error('❌ userNameDisplay 요소를 찾을 수 없습니다');
+            }
+        };
+        
+        // 사용자 메뉴 토글
+        window.toggleUserMenu = function() {
+            const dropdown = document.getElementById('userDropdown');
+            const button = document.getElementById('userMenuButton');
+            
+            if (dropdown && button) {
+                dropdown.classList.toggle('show');
+                button.classList.toggle('active');
+            }
+        };
+        
+        // 외부 클릭 시 드롭다운 닫기
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('click', function(e) {
+                const userMenu = document.querySelector('.user-menu');
+                if (userMenu && !userMenu.contains(e.target)) {
+                    const dropdown = document.getElementById('userDropdown');
+                    const button = document.getElementById('userMenuButton');
+                    if (dropdown) dropdown.classList.remove('show');
+                    if (button) button.classList.remove('active');
+                }
+            });
+        });
+    </script>
     <style>
         * {
             margin: 0;
