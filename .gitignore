@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# 로컬 테스트
+test/
+temp/
