@@ -9,75 +9,49 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <!-- 공통 인증 체크 (1줄!) -->
+    <script type="module" src="auth-check.js"></script>
     
-    <!-- Firebase 인증 체크 (가장 먼저!) -->
-    <script type="module">
-        // Firebase 설정 가져오기 (한 곳에서만 관리!)
-        import { auth } from './firebase-config.js';
-        import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
-
-        // 🔒 뒤로가기 감지 및 재확인
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                console.log('페이지 캐시에서 로드됨 - 인증 재확인');
-                location.reload();
-            }
-        });
-
-        // 🔒 전역 변수로 사용자 정보 저장
-        window.currentAuthUser = null;
-        
-        window.getCurrentUser = function() {
-            return window.currentAuthUser;
-        };
-
-        // 로그인 확인
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                // 로그인 안 됨 → 로그인 페이지로
-                console.log('로그인 필요 - login.html로 이동');
-                window.location.replace('login.html'); // replace 사용 (뒤로가기 방지)
+    <!-- index.html 전용 초기화 -->
+    <script>
+        // 페이지 초기화 함수 (auth-check.js에서 호출됨)
+        window.pageInit = function(user) {
+            console.log('📄 index.html 페이지 초기화:', user.email);
+            
+            const username = user.email.split('@')[0];
+            console.log('👤 사용자명:', username);
+            
+            // 사용자 정보 표시
+            const userInfo = document.getElementById('userInfo');
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <div class="user-info-box">
+                        <span class="user-name">👤 ${username}님</span>
+                        <button class="logout-btn" onclick="handleLogout()">
+                            로그아웃
+                        </button>
+                    </div>
+                `;
+                console.log('✅ 사용자 정보 표시 완료');
             } else {
-                // 로그인 됨
-                console.log('✅ 로그인된 사용자:', user.email);
-                window.currentAuthUser = user;
-                
-                const username = user.email.split('@')[0];
-                
-                // 사용자 정보 표시
-                const userInfo = document.getElementById('userInfo');
-                if (userInfo) {
-                    userInfo.innerHTML = `
-                        <div class="user-info-box">
-                            <span class="user-name">👤 ${username}님</span>
-                            <button class="logout-btn" onclick="handleLogout()">
-                                로그아웃
-                            </button>
-                        </div>
-                    `;
-                }
-                
-                // kiyoung85 계정일 때만 행정실장 카드 표시
-                const adminCard = document.getElementById('adminCard');
-                if (adminCard && username === 'kiyoung85') {
-                    adminCard.style.display = 'block';
-                }
+                console.error('❌ userInfo 요소를 찾을 수 없습니다');
             }
-        });
-
-        // 로그아웃 함수 (개선)
-        window.handleLogout = async function() {
-            if (confirm('로그아웃 하시겠습니까?')) {
-                try {
-                    await signOut(auth);
-                    console.log('로그아웃 성공');
-                    // replace 사용으로 뒤로가기 방지
-                    window.location.replace('login.html');
-                } catch (error) {
-                    console.error('로그아웃 실패:', error);
-                    alert('로그아웃에 실패했습니다.');
+            
+            // kiyoung85 계정일 때만 행정실장 카드 표시
+            const adminCard = document.getElementById('adminCard');
+            console.log('🏢 adminCard 요소:', adminCard);
+            console.log('🔍 username === "kiyoung85":', username === 'kiyoung85');
+            
+            if (adminCard) {
+                if (username === 'kiyoung85') {
+                    adminCard.style.display = 'block';
+                    console.log('✅ 행정실장 카드 표시됨!');
+                } else {
+                    adminCard.style.display = 'none';
+                    console.log('ℹ️ 행정실장 권한 없음 (일반 사용자)');
                 }
+            } else {
+                console.error('❌ adminCard 요소를 찾을 수 없습니다!');
             }
         };
     </script>
