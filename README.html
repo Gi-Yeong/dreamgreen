@@ -420,6 +420,37 @@
             
             <!-- 버전 게시판 -->
             <div class="version-board" id="versionBoard">
+                <!-- v1.5.0 -->
+                <div class="version-item" data-type="minor">
+                    <div class="version-header" onclick="toggleVersion(this)">
+                        <div class="version-info">
+                            <span class="version-number">v1.5.0</span>
+                            <span class="badge-minor">Minor</span>
+                            <span class="version-date">2025-12-28</span>
+                        </div>
+                        <div class="version-title">📚 자료실 시스템 및 인증 리팩토링</div>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="version-content">
+                        <div class="version-summary">
+                            자료실 신규 추가, 인증 시스템 통합, 보안 강화
+                        </div>
+                        <ul class="version-changes">
+                            <li><strong>📚 자료실 시스템:</strong> archive.html 페이지 신규 추가</li>
+                            <li><strong>문서 관리:</strong> documents.json 파일 메타데이터 관리</li>
+                            <li><strong>검색 기능:</strong> 카테고리별 파일 분류 및 검색</li>
+                            <li><strong>다운로드:</strong> 파일 다운로드 기능 구현</li>
+                            <li><strong>간호 서식:</strong> 9개 파일 등록 (HWP, PDF, CELL)</li>
+                            <li><strong>🔒 인증 리팩토링:</strong> auth-check.js 공통 스크립트 생성</li>
+                            <li><strong>코드 중복 제거:</strong> 50-100줄 → 1줄로 간소화</li>
+                            <li><strong>window.pageInit:</strong> 페이지별 초기화 패턴 도입</li>
+                            <li><strong>보안 강화:</strong> 로그아웃 후 뒤로가기 방지</li>
+                            <li><strong>캠시 방지:</strong> 메타 태그 + pageshow 이벤트</li>
+                            <li><strong>버그 수정:</strong> index.html 행정실장 카드, app.html 사용자 정보 표시</li>
+                        </ul>
+                    </div>
+                </div>
+                
                 <!-- v1.4.0 -->
                 <div class="version-item" data-type="minor">
                     <div class="version-header" onclick="toggleVersion(this)">
