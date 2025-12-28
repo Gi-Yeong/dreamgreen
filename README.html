@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>업데이트 내역 및 사용 가이드 - 시흥꿈에그린요양원</title>
+    <!-- 🔒 캐시 방지 및 뒤로가기 보안 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         * {
             margin: 0;
@@ -681,5 +685,55 @@
         });
     </script>
     <script src="version.js"></script>
+        
+    <!-- 🔒 Firebase 인증 체크 (추가!) -->
+    <script type="module">
+        // Firebase 설정 가져오기
+        import { auth } from './firebase-config.js';
+        import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // 🔒 뒤로가기 감지 및 인증 재확인
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // 브라우저 캐시에서 페이지가 로드된 경우 (뒤로가기)
+                console.log('페이지 캐시에서 로드됨 - 인증 재확인');
+                location.reload();
+            }
+        });
+
+        // 🔒 전역 변수로 사용자 정보 저장
+        window.currentAuthUser = null;
+        
+        window.getCurrentUser = function() {
+            return window.currentAuthUser;
+        };
+
+        // 로그인 확인
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // 로그인 안 됨 → 로그인 페이지로
+                console.log('로그인 필요 - login.html로 이동');
+                window.location.replace('login.html');
+            } else {
+                // 로그인 됨
+                console.log('✅ 로그인된 사용자:', user.email);
+                window.currentAuthUser = user;
+            }
+        });
+
+        // 로그아웃 함수 (홈 버튼에서 사용 가능)
+        window.handleLogout = async function() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                try {
+                    await signOut(auth);
+                    console.log('로그아웃 성공');
+                    window.location.replace('login.html');
+                } catch (error) {
+                    console.error('로그아웃 실패:', error);
+                    alert('로그아웃에 실패했습니다.');
+                }
+            }
+        };
+    </script>
 </body>
 </html>
