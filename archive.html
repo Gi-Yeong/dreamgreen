@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자료실 - 시흥꿈에그린요양원</title>
+    
+    <!-- 🔒 캐시 방지 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- 공통 인증 체크 -->
+    <script type="module" src="auth-check.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+        
+        .home-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 35px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3em;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+        
+        .category-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .category-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .category-description {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        
+        .file-count {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .file-list {
+            display: none;
+        }
+        
+        .file-list.active {
+            display: block;
+        }
+        
+        .file-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+        
+        .file-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-type-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .file-type-badge.hwp {
+            background: #e74c3c;
+        }
+        
+        .file-type-badge.pdf {
+            background: #e67e22;
+        }
+        
+        .file-type-badge.cell {
+            background: #27ae60;
+        }
+        
+        .file-description {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .file-size {
+            color: #999;
+            font-size: 0.85em;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .back-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .no-results-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .file-actions {
+                width: 100%;
+            }
+            
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="home-btn">🏠 홈으로</a>
+        <h1>📚 자료실</h1>
+        <p>업무 관련 서식 및 문서 다운로드</p>
+    </div>
+    
+    <div class="container">
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="파일명 또는 설명 검색...">
+        </div>
+        
+        <div id="categoryView">
+            <div class="loading" id="loading">자료 불러오는 중...</div>
+            <div class="category-grid" id="categoryGrid" style="display: none;"></div>
+        </div>
+        
+        <div id="fileView" style="display: none;">
+            <button class="back-btn" onclick="showCategories()">← 카테고리로 돌아가기</button>
+            <div id="fileList"></div>
+        </div>
+        
+        <div id="searchResults" style="display: none;">
+            <button class="back-btn" onclick="clearSearch()">← 전체 보기</button>
+            <h2 style="margin-bottom: 20px; color: #2c3e50;">검색 결과</h2>
+            <div id="searchResultsList"></div>
+        </div>
+    </div>
+    
+    <script>
+        let documentsData = null;
+        let currentCategory = null;
+        
+        // 문서 데이터 로드
+        async function loadDocuments() {
+            try {
+                const response = await fetch('documents.json');
+                documentsData = await response.json();
+                displayCategories();
+            } catch (error) {
+                console.error('문서 로드 실패:', error);
+                document.getElementById('loading').textContent = '문서를 불러오는데 실패했습니다.';
+            }
+        }
+        
+        // 카테고리 표시
+        function displayCategories() {
+            const grid = document.getElementById('categoryGrid');
+            const loading = document.getElementById('loading');
+            
+            grid.innerHTML = documentsData.categories.map(category => `
+                <div class="category-card" onclick="showFiles('${category.id}')">
+                    <div class="category-icon">${category.icon}</div>
+                    <div class="category-name">${category.name}</div>
+                    <div class="category-description">${category.description}</div>
+                    <div class="file-count">📄 ${category.files.length}개 파일</div>
+                </div>
+            `).join('');
+            
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+        }
+        
+        // 파일 목록 표시
+        function showFiles(categoryId) {
+            currentCategory = documentsData.categories.find(c => c.id === categoryId);
+            
+            const categoryView = document.getElementById('categoryView');
+            const fileView = document.getElementById('fileView');
+            const fileList = document.getElementById('fileList');
+            
+            fileList.innerHTML = `
+                <h2 style="margin-bottom: 25px; color: #2c3e50; display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 1.5em;">${currentCategory.icon}</span>
+                    <span>${currentCategory.name}</span>
+                </h2>
+                ${currentCategory.files.map(file => createFileCard(file)).join('')}
+            `;
+            
+            categoryView.style.display = 'none';
+            fileView.style.display = 'block';
+        }
+        
+        // 파일 카드 생성
+        function createFileCard(file) {
+            return `
+                <div class="file-item">
+                    <div class="file-info">
+                        <div class="file-name">
+                            <span>${file.name}</span>
+                            <span class="file-type-badge ${file.type}">${file.type}</span>
+                        </div>
+                        <div class="file-description">${file.description}</div>
+                        <div class="file-size">📦 ${file.size}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="download-btn" onclick="downloadFile('${file.path}', '${file.name}')">
+                            <span>⬇</span>
+                            <span>다운로드</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 카테고리 뷰로 돌아가기
+        function showCategories() {
+            document.getElementById('categoryView').style.display = 'block';
+            document.getElementById('fileView').style.display = 'none';
+            document.getElementById('searchResults').style.display = 'none';
+        }
+        
+        // 파일 다운로드
+        function downloadFile(path, filename) {
+            const link = document.createElement('a');
+            link.href = path;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 다운로드 알림
+            showNotification(`"${filename}" 다운로드 시작!`);
+        }
+        
+        // 알림 표시
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // 검색 기능
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (query === '') {
+                clearSearch();
+                return;
+            }
+            
+            // 모든 카테고리에서 검색
+            const results = [];
+            documentsData.categories.forEach(category => {
+                category.files.forEach(file => {
+                    if (file.name.toLowerCase().includes(query) || 
+                        file.description.toLowerCase().includes(query)) {
+                        results.push({...file, categoryName: category.name, categoryIcon: category.icon});
+                    }
+                });
+            });
+            
+            displaySearchResults(results, query);
+        });
+        
+        // 검색 결과 표시
+        function displaySearchResults(results, query) {
+            const categoryView = document.getElementById('categoryView');
+            const fileView = document.getElementById('fileView');
+            const searchResults = document.getElementById('searchResults');
+            const searchResultsList = document.getElementById('searchResultsList');
+            
+            categoryView.style.display = 'none';
+            fileView.style.display = 'none';
+            searchResults.style.display = 'block';
+            
+            if (results.length === 0) {
+                searchResultsList.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <p>"${query}"에 대한 검색 결과가 없습니다.</p>
+                    </div>
+                `;
+            } else {
+                searchResultsList.innerHTML = results.map(file => `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-name">
+                                <span>${file.categoryIcon} ${file.name}</span>
+                                <span class="file-type-badge ${file.type}">${file.type}</span>
+                            </div>
+                            <div class="file-description">${file.description}</div>
+                            <div class="file-size">📂 ${file.categoryName} | 📦 ${file.size}</div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="download-btn" onclick="downloadFile('${file.path}', '${file.name}')">
+                                <span>⬇</span>
+                                <span>다운로드</span>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // 검색 초기화
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').style.display = 'none';
+            
+            if (currentCategory) {
+                document.getElementById('fileView').style.display = 'block';
+            } else {
+                document.getElementById('categoryView').style.display = 'block';
+            }
+        }
+        
+        // 페이지 로드 시 문서 데이터 로드
+        loadDocuments();
+    </script>
+    
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+        }
+    </style>
+    
+    <script src="version.js"></script>
+</body>
+</html>

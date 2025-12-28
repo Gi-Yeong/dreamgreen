@@ -196,6 +196,17 @@
             box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
         }
         
+        .info-btn.archive {
+            border: 2px solid #27ae60;
+            color: #27ae60;
+        }
+        
+        .info-btn.archive:hover {
+            background: #27ae60;
+            color: white;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+        
         @keyframes pulse-notice {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -344,6 +355,9 @@
         <div class="info-section">
             <a href="notice.html" class="info-btn notice">
                 📋 공지사항 (필독)
+            </a>
+            <a href="archive.html" class="info-btn archive">
+                📚 자료실
             </a>
             <a href="README.html" class="info-btn">
                 📖 업데이트 내역 및 사용 가이드

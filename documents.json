@@ -1,0 +1,75 @@
+{
+  "categories": [
+    {
+      "id": "nursing",
+      "name": "간호 관련 서식",
+      "icon": "🏥",
+      "description": "간호업무 관련 서식 및 문서",
+      "files": [
+        {
+          "name": "온내과 동의서 서식.hwpx",
+          "description": "온라인 내과 진료 동의서",
+          "path": "data/document/nursing/(온내과 동의서 서식.hwpx",
+          "size": "약 50KB",
+          "type": "hwpx"
+        },
+        {
+          "name": "2025독감.cell",
+          "description": "2025년 독감 예방접종 관련",
+          "path": "data/document/nursing/2025독감.cell",
+          "size": "약 30KB",
+          "type": "cell"
+        },
+        {
+          "name": "25년건강검진.hwp",
+          "description": "2025년 건강검진 서식",
+          "path": "data/document/nursing/25년건강검진.hwp",
+          "size": "약 40KB",
+          "type": "hwp"
+        },
+        {
+          "name": "가정간호의뢰요청서.hwp",
+          "description": "가정간호 의뢰 요청 서식",
+          "path": "data/document/nursing/가정간호의뢰요청서.hwp",
+          "size": "약 35KB",
+          "type": "hwp"
+        },
+        {
+          "name": "간호청구.hwp",
+          "description": "간호 청구 관련 서식",
+          "path": "data/document/nursing/간호청구.hwp",
+          "size": "약 45KB",
+          "type": "hwp"
+        },
+        {
+          "name": "다온약국 청구.hwpx",
+          "description": "다온약국 청구 서식",
+          "path": "data/document/nursing/다온약국 청구.hwpx",
+          "size": "약 50KB",
+          "type": "hwpx"
+        },
+        {
+          "name": "신체제재 동의서 및 일지-샘플.hwp",
+          "description": "신체제재 동의서 및 관리일지 샘플",
+          "path": "data/document/nursing/신체제재 동의서 및 일지-샘플.hwp",
+          "size": "약 60KB",
+          "type": "hwp"
+        },
+        {
+          "name": "예방접종 예진표.pdf",
+          "description": "예방접종 예진표",
+          "path": "data/document/nursing/예방접종 예진표.pdf",
+          "size": "약 200KB",
+          "type": "pdf"
+        },
+        {
+          "name": "촉탁진료기록부.cell",
+          "description": "촉탁의 진료 기록부",
+          "path": "data/document/nursing/촉탁진료기록부.cell",
+          "size": "약 35KB",
+          "type": "cell"
+        }
+      ]
+    }
+  ]
+}
