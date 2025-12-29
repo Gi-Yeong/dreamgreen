@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업무 관리 어드민 - 시흥꿈에그린요양원</title>
+    
+    <!-- 🔒 캐시 방지 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- 공통 인증 체크 -->
+    <script type="module" src="auth-check.js"></script>
+    
+    <!-- 어드민 권한 체크 -->
+    <script>
+        window.pageInit = function(user) {
+            console.log('🔐 어드민 페이지 접근:', user.email);
+            
+            // 권한 체크
+            const adminEmails = ['kiyoung85@gmail.com', 'skrmsp9924@naver.com'];
+            
+            if (!adminEmails.includes(user.email)) {
+                alert('⛔ 권한이 없습니다!\n\n이 페이지는 관리자만 접근할 수 있습니다.');
+                window.location.replace('index.html');
+                return;
+            }
+            
+            console.log('✅ 어드민 권한 확인됨');
+            
+            // 사용자 정보 표시
+            const userDisplay = document.getElementById('adminUser');
+            if (userDisplay) {
+                userDisplay.textContent = user.email.split('@')[0] + '님 (관리자)';
+            }
+            
+            // 데이터 로드
+            loadAllData();
+        };
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-title h1 {
+            font-size: 1.8em;
+        }
+        
+        .admin-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-home {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .btn-home:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .tabs {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: #ecf0f1;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            transform: translateY(-2px);
+            background: #d5d8dc;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .staff-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+        
+        .staff-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .staff-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .staff-count {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .task-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .task-section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .task-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+        }
+        
+        .task-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .task-meta {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #3498db;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #95a5a6;
+        }
+        
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        /* 누락 업무 스타일 */
+        .missing-staff-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .missing-staff-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .missing-staff-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .missing-count {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .missing-task-item {
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+        
+        .missing-task-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .missing-task-meta {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .notice-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+        
+        .notice-box strong {
+            color: #e74c3c;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .staff-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1>📖 업무 관리 시스템 (읽기 전용)</h1>
+                <span class="admin-badge" id="adminUser">로드 중...</span>
+            </div>
+            <div>
+                <a href="index.html" class="btn btn-home">🏠 홈으로</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 안내 메시지 -->
+        <div class="notice-box">
+            <strong>ℹ️ 읽기 전용 모드</strong><br>
+            현재 브라우저에서는 서버 파일을 수정할 수 없어 <strong>읽기 전용</strong>으로만 운영됩니다.<br>
+            업무 수정/추가/삭제 기능은 추후 서버 구축 시 활성화됩니다.
+        </div>
+        
+        <!-- 탭 메뉴 -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'overview')">📊 전체 개요</button>
+            <button class="tab-btn" onclick="switchTab(event, 'view')">📖 업무 보기</button>
+            <button class="tab-btn" onclick="switchTab(event, 'missing')">⚠️ 누락 업무 확인</button>
+        </div>
+        
+        <!-- 전체 개요 탭 -->
+        <div id="tab-overview" class="tab-content active">
+            <div class="section">
+                <h2>📊 직원별 업무 현황</h2>
+                <div class="loading" id="overviewLoading">데이터 로드 중...</div>
+                <div id="overviewContent" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <!-- 업무 보기 탭 -->
+        <div id="tab-view" class="tab-content">
+            <div class="section">
+                <h2>📖 업무 상세 보기</h2>
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 10px; font-weight: bold;">직원 선택</label>
+                    <select id="viewStaffSelect" onchange="loadStaffView()" style="width: 100%; padding: 12px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 1em;">
+                        <option value="">직원을 선택하세요</option>
+                    </select>
+                </div>
+                <div id="viewContent"></div>
+            </div>
+        </div>
+        
+        <!-- 누락 업무 탭 -->
+        <div id="tab-missing" class="tab-content">
+            <div class="section">
+                <h2>⚠️ 누락 업무 목록</h2>
+                <p style="margin-bottom: 20px; color: #666;">
+                    이미지 분석 결과 평가지표에 매핑되지 않은 업무들입니다.
+                </p>
+                <div class="loading" id="missingLoading">누락 업무 데이터 로드 중...</div>
+                <div id="missingContent" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -420,6 +420,36 @@
             
             <!-- 버전 게시판 -->
             <div class="version-board" id="versionBoard">
+                <!-- v1.6.0 -->
+                <div class="version-item" data-type="minor">
+                    <div class="version-header" onclick="toggleVersion(this)">
+                        <div class="version-info">
+                            <span class="version-number">v1.6.0</span>
+                            <span class="badge-minor">Minor</span>
+                            <span class="version-date">2025-12-29</span>
+                        </div>
+                        <div class="version-title">📖 업무 관리 시스템 읽기 전용 모드로 전환</div>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="version-content">
+                        <div class="version-summary">
+                            브라우저 한계 인식, 서버 구축 전까지 읽기 전용 운영
+                        </div>
+                        <ul class="version-changes">
+                            <li><strong>📖 읽기 전용 모드:</strong> 브라우저에서 JSON 파일 수정 불가능한 한계 인식</li>
+                            <li><strong>기능 비활성화:</strong> 업무 수정/추가/삭제 기능 제거</li>
+                            <li><strong>평가지표 정렬:</strong> 오름차순 자동 정렬 기능 추가</li>
+                            <li><strong>3개 탭 심플화:</strong> 전체 개요, 업무 보기, 누락 업무 확인</li>
+                            <li><strong>직원별 업무 보기:</strong> 평가지표 순서대로 업무 표시</li>
+                            <li><strong>누락 업무 목록:</strong> 직책별 누락 업무 확인</li>
+                            <li><strong>안내 메시지:</strong> 읽기 전용 모드 설명 추가</li>
+                            <li><strong>localStorage 제거:</strong> 빨른 로딩 속도</li>
+                            <li><strong>전체 리팩토링:</strong> admin.html 및 admin.js 완전 재작성</li>
+                            <li><strong>향후 계획:</strong> 서버 구축 시 수정/추가/삭제 기능 활성화 예정</li>
+                        </ul>
+                    </div>
+                </div>
+                
                 <!-- v1.5.0 -->
                 <div class="version-item" data-type="minor">
                     <div class="version-header" onclick="toggleVersion(this)">

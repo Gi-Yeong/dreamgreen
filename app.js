@@ -94,15 +94,30 @@ async function loadData() {
     `;
     
     try {
-        console.log(`data/${currentStaff}.json 로드 시작...`);
+        console.log(`${currentStaff} 데이터 로드 시작...`);
         
-        // 개별 직원 파일 로드
-        const staffResponse = await fetch(`data/${currentStaff}.json`);
-        const staffData = await staffResponse.json();
+        // 1. localStorage에서 로드 시도
+        const localKey = 'dreamgreen_staff_' + currentStaff;
+        console.log('localStorage 키:', localKey);
         
-        // allData 객체에 현재 직원 데이터 저장
-        allData[currentStaff] = staffData;
-        console.log(`data/${currentStaff}.json 로드 성공`);
+        const localData = localStorage.getItem(localKey);
+        console.log('localStorage 데이터 존재 여부:', !!localData);
+        
+        if (localData) {
+            console.log(`💾 localStorage에서 ${currentStaff} 로드`);
+            const staffData = JSON.parse(localData);
+            allData[currentStaff] = staffData;
+            console.log(`✅ localStorage에서 ${staffData.length}개 섹션 로드 완료`);
+        } else {
+            // 2. localStorage에 없으면 JSON 파일에서 로드
+            console.log(`📂 JSON 파일에서 ${currentStaff} 로드`);
+            const staffResponse = await fetch(`data/${currentStaff}.json`);
+            const staffData = await staffResponse.json();
+            allData[currentStaff] = staffData;
+            console.log(`✅ JSON에서 ${staffData.length}개 섹션 로드 완료`);
+        }
+        
+        console.log('최종 allData:', allData[currentStaff]);
         
         // colors.json 로드
         const colorsResponse = await fetch('colors.json');
@@ -130,6 +145,10 @@ function renderContent() {
     
     const content = document.getElementById('content');
     let staffData = allData[currentStaff];
+    
+    console.log('renderContent 실행:', currentStaff);
+    console.log('staffData:', staffData);
+    console.log('staffData 길이:', staffData ? staffData.length : 0);
     
         // 행정실장 업무는 kiyoung85@gmail.com만 볼 수 있음
 if (currentStaff === '행정실장') {
@@ -176,6 +195,49 @@ if (currentStaff === '행정실장') {
         return;
     }
     
+    // 최근 추가/수정된 업무 추출 (1주일 이내)
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    
+    const recentTasks = [];
+    staffData.forEach(section => {
+        if (section.title.includes('참고:')) return;
+        
+        section.data.forEach((item, index) => {
+            if (item.addedAt || item.modifiedAt) {
+                const timestamp = item.addedAt || item.modifiedAt;
+                const taskDate = new Date(timestamp);
+                
+                if (taskDate >= oneWeekAgo) {
+                    recentTasks.push({
+                        section: section.title,
+                        task: item,
+                        index: index,
+                        timestamp: timestamp,
+                        type: item.addedAt ? 'added' : 'modified'
+                    });
+                }
+            }
+        });
+    });
+    
+    // 최근 순으로 정렬
+    recentTasks.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    // 섹션 정렬 (평가지표 번호 오름차순)
+    staffData.sort((a, b) => {
+        const numA = extractIndicatorNumber(a.title);
+        const numB = extractIndicatorNumber(b.title);
+        
+        // 평가지표 번호가 없으면 맨 뒤로
+        if (!numA && !numB) return 0;
+        if (!numA) return 1;
+        if (!numB) return -1;
+        
+        // 번호 비교
+        return parseInt(numA) - parseInt(numB);
+    });
+    
     // 범례 생성
     let html = `
         <div class="legend">
@@ -208,6 +270,51 @@ if (currentStaff === '행정실장') {
             </div>
         </div>
     `;
+    
+    // 최근 추가/수정 업무 섹션 (있을 경우만)
+    if (recentTasks.length > 0) {
+        html += `
+            <div class="section" style="border-left: 4px solid #e74c3c; background: #fff5f5;">
+                <div class="section-title" style="color: #e74c3c; display: flex; align-items: center; gap: 10px;">
+                    ⭐ 최근 1주일 내 추가/수정된 업무 (${recentTasks.length}개)
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>업무 내용</th>
+                            <th>비고</th>
+                            <th>주기</th>
+                            <th style="width: 120px;">상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        recentTasks.forEach((recent, idx) => {
+            const color = colors[recent.task.cycle] || '#FFFFFF';
+            const badge = recent.type === 'added' ? '🆕 신규' : '✏️ 수정';
+            const badgeColor = recent.type === 'added' ? '#27ae60' : '#3498db';
+            
+            html += `
+                <tr data-cycle="${recent.task.cycle}" data-base-cycle="${recent.task.baseCycle}" data-section="${recent.section}">
+                    <td class="task-cell">${recent.task.task}</td>
+                    <td class="note-cell">${recent.task.note}</td>
+                    <td class="cycle-cell" style="background-color: ${color};">${recent.task.cycle}</td>
+                    <td style="text-align: center;">
+                        <span style="background: ${badgeColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">
+                            ${badge}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
     
     // 섹션 생성
     let taskId = 0;

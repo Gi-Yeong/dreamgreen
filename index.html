@@ -53,6 +53,16 @@
             } else {
                 console.error('❌ adminCard 요소를 찾을 수 없습니다!');
             }
+            
+            // 어드민 버튼 표시 (kiyoung85 또는 skrmsp9924)
+            const adminEmails = ['kiyoung85@gmail.com', 'skrmsp9924@naver.com'];
+            if (adminEmails.includes(user.email)) {
+                const adminBtn = document.getElementById('adminButton');
+                if (adminBtn) {
+                    adminBtn.style.display = 'inline-flex';
+                    console.log('✅ 어드민 버튼 표시됨!');
+                }
+            }
         };
     </script>
     
@@ -207,6 +217,17 @@
             box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
         }
         
+        .info-btn.admin {
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .info-btn.admin:hover {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
         @keyframes pulse-notice {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -358,6 +379,9 @@
             </a>
             <a href="archive.html" class="info-btn archive">
                 📚 자료실
+            </a>
+            <a href="admin.html" class="info-btn admin" id="adminButton" style="display: none;">
+                🔐 업무 관리
             </a>
             <a href="README.html" class="info-btn">
                 📖 업데이트 내역 및 사용 가이드
